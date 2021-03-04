@@ -4,6 +4,7 @@ import java.io.InputStream;
 
 import org.objectweb.asm.*;
 
+
 public class ClassDescriptor extends ClassVisitor {
 
     public InputStream className;
