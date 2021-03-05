@@ -2,8 +2,11 @@ package asm.subbotina;
 
 import java.io.InputStream;
 
-import org.objectweb.asm.*;
-
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.FieldVisitor;
+import org.objectweb.asm.AnnotationVisitor;
 
 public class ClassDescriptor extends ClassVisitor {
 
@@ -14,7 +17,7 @@ public class ClassDescriptor extends ClassVisitor {
     }
 
     public ClassDescriptor(InputStream stream) {
-        super(Opcodes.ASM4);
+        super(Opcodes.ASM7);
         className = stream;
     }
 
