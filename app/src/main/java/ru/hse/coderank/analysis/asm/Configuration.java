@@ -7,7 +7,7 @@ import java.util.Properties;
 
 public class Configuration {
     private Properties properties;
-    private static String[] tokens = new String[0];
+    private static String[] packages = new String[0];
 
     Configuration() throws IOException {
         InputStream input = new FileInputStream("app/src/main/resources/analysis.properties");
@@ -15,13 +15,13 @@ public class Configuration {
         properties.load(input);
 
         String packagesList = properties.getProperty("process-packages");
-        String deliminator = "[, ]";
-        tokens = packagesList.split(deliminator);
+        String deliminator = "[,][ ]";
+        packages = packagesList.split(deliminator);
     }
 
     public static boolean processPackage(String name) {
-        for (String token : tokens) {
-            if (!token.equals("") && name.startsWith(token)) {
+        for (String token : packages) {
+            if (name.startsWith(token)) {
                 return true;
             }
         }
