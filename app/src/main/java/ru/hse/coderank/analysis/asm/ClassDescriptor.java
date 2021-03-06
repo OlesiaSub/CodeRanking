@@ -1,4 +1,4 @@
-package asm.subbotina;
+package ru.hse.coderank.analysis.asm;
 
 import java.io.InputStream;
 

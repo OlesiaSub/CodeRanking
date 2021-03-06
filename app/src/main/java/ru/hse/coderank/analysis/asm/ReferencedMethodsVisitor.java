@@ -1,4 +1,4 @@
-package asm.subbotina;
+package ru.hse.coderank.analysis.asm;
 
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
@@ -15,7 +15,9 @@ public class ReferencedMethodsVisitor extends MethodVisitor {
     }
 
     static void getReferenceInfo(String owner, String name, String desc) {
-        System.out.println("REF " + Type.getObjectType(owner).getClassName() + "." + name + " " + desc);
+        if (Configuration.processPackage(owner)) {
+            System.out.println("REF " + Type.getObjectType(owner).getClassName() + "." + name + " " + desc);
+        }
     }
 
     @Override
