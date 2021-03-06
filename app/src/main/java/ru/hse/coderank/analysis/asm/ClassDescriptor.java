@@ -45,7 +45,7 @@ public class ClassDescriptor extends ClassVisitor {
     @Override
     public FieldVisitor visitField(int access, String name, String desc,
                                    String signature, Object value) {
-        System.out.println(" " + desc + " " + name);
+//        System.out.println(" " + desc + " " + name);
         return null;
     }
 
@@ -55,7 +55,7 @@ public class ClassDescriptor extends ClassVisitor {
     @Override
     public MethodVisitor visitMethod(int access, String name,
                                      String desc, String signature, String[] exceptions) {
-        System.out.println(" " + name + desc);
+        System.out.println("ACTUAL: " + name + desc);
         return new ReferencedMethodsVisitor();
     }
 

@@ -16,7 +16,7 @@ public class ReferencedMethodsVisitor extends MethodVisitor {
 
     static void getReferenceInfo(String owner, String name, String desc) {
         if (Configuration.processPackage(owner)) {
-            System.out.println("REF " + Type.getObjectType(owner).getClassName() + "." + name + " " + desc);
+            System.out.println("REF: " + Type.getObjectType(owner).getClassName() + "." + name + " " + desc);
         }
     }
 
