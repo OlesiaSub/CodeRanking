@@ -2,7 +2,7 @@ package ru.hse.coderank.analysis.asm;
 
 import java.util.ArrayList;
 
-public class MethodNode {
+public class MethodNode implements Node {
 
     public String name;
     public String desc;
@@ -20,4 +20,9 @@ public class MethodNode {
                 desc.equals(other.desc) && children.equals(other.children);
     }
 
+
+    @Override
+    public ArrayList<MethodNode> getChildren() {
+        return children;
+    }
 }
