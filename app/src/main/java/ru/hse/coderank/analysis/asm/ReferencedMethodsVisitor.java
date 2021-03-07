@@ -6,23 +6,33 @@ import org.objectweb.asm.Type;
 
 public class ReferencedMethodsVisitor extends MethodVisitor {
 
+    public MethodNode parent;
+
     public ReferencedMethodsVisitor() {
         super(Opcodes.ASM7);
     }
 
-    public ReferencedMethodsVisitor(ClassDescriptor descriptor) {
+    public ReferencedMethodsVisitor(MethodNode parent) {
         super(Opcodes.ASM7);
+        this.parent = parent;
     }
 
-    static void getReferenceInfo(String owner, String name, String desc) {
+    void getReferenceInfo(String owner, String name, String desc) {
         if (Configuration.processPackage(owner)) {
-            System.out.println("REF: " + Type.getObjectType(owner).getClassName() + "." + name + " " + desc);
+            String actualName = Type.getObjectType(owner).getClassName() + "." + name;
+            System.out.println("REF: " + actualName + " " + desc);
+            parent.children.add(new MethodNode(actualName, desc));
         }
     }
 
     @Override
     public void visitMethodInsn(int opcode, String owner, String name, String desc, boolean itf) {
         getReferenceInfo(owner, name, desc);
+    }
+
+    @Override
+    public void visitEnd() {
+
     }
 
 }

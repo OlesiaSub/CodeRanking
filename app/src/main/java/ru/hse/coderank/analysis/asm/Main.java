@@ -8,8 +8,12 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.Type;
+import ru.hse.coderank.analysis.graph.Graph;
 
 public class Main {
+
+    public static Graph <MethodNode> graph = new Graph<>();
 
     public static void main(String[] args) throws IOException {
         String jarPath = args[0];
@@ -30,7 +34,10 @@ public class Main {
                 }
             }
         }
-
+        System.out.println("FIN");
+        for (MethodNode m : graph.storage.keySet()) {
+            System.out.println(m.name);
+        }
     }
 }
 

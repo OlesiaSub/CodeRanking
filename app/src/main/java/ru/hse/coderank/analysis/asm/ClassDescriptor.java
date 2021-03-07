@@ -2,15 +2,12 @@ package ru.hse.coderank.analysis.asm;
 
 import java.io.InputStream;
 
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.FieldVisitor;
-import org.objectweb.asm.AnnotationVisitor;
+import org.objectweb.asm.*;
 
 public class ClassDescriptor extends ClassVisitor {
 
     public InputStream className;
+    public String actualClassName;
 
     public ClassDescriptor() {
         super(Opcodes.ASM7);
@@ -31,6 +28,7 @@ public class ClassDescriptor extends ClassVisitor {
         for (String curInterface : interfaces) {
             System.out.println(name + " implements " + curInterface);
         }
+        actualClassName = name;
     }
 
     @Override
@@ -55,8 +53,12 @@ public class ClassDescriptor extends ClassVisitor {
     @Override
     public MethodVisitor visitMethod(int access, String name,
                                      String desc, String signature, String[] exceptions) {
-        System.out.println("ACTUAL: " + name + desc);
-        return new ReferencedMethodsVisitor();
+        String actualName = actualClassName + ' ' + name;
+        System.out.println("ACTUAL: " + actualName + desc);
+        MethodNode parent = new MethodNode(actualName, desc);
+        ReferencedMethodsVisitor ref = new ReferencedMethodsVisitor(parent);
+        Main.graph.storage.put(parent, false);
+        return ref;
     }
 
     /**
