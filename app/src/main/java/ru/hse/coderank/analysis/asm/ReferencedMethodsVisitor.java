@@ -8,10 +8,6 @@ public class ReferencedMethodsVisitor extends MethodVisitor {
 
     public MethodNode parent;
 
-    public ReferencedMethodsVisitor() {
-        super(Opcodes.ASM7);
-    }
-
     public ReferencedMethodsVisitor(MethodNode parent) {
         super(Opcodes.ASM7);
         this.parent = parent;

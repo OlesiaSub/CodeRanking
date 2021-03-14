@@ -34,7 +34,10 @@ public class Main {
                 }
             }
         }
+
         graph.constructGraph();
+
+        // Print graph
         System.out.println("FIN");
         for (MethodNode m : graph.storage.keySet()) {
             System.out.println("\nNEW METHOD");

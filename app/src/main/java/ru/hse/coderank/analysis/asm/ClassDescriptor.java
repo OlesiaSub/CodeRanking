@@ -9,10 +9,6 @@ public class ClassDescriptor extends ClassVisitor {
     public InputStream className;
     public String actualClassName;
 
-    public ClassDescriptor() {
-        super(Opcodes.ASM7);
-    }
-
     public ClassDescriptor(InputStream stream) {
         super(Opcodes.ASM7);
         className = stream;

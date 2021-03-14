@@ -12,12 +12,6 @@ public class MethodNode extends Node {
         this.children = new ArrayList<>();
     }
 
-//    @Override
-//    boolean nodeEquals(MethodNode other) {
-//        return getClass().equals(other.getClass()) && name.equals(other.name) &&
-//                desc.equals(other.desc) && children.equals(other.children);
-//    }
-
     @Override
     @SuppressWarnings("unchecked")
     public ArrayList<MethodNode> getChildren() {

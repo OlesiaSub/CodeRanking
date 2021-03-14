@@ -9,6 +9,7 @@ public abstract class Node {
     public String desc;
     public ArrayList<MethodNode> children;
     public boolean used;
+
     public abstract <T extends Node> ArrayList<T> getChildren();
 
     public <T extends Node> boolean nodeEquals(@NonNull T current, @NonNull T other) {

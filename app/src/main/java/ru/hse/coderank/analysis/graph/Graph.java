@@ -25,7 +25,6 @@ public class Graph<T extends Node> {
     @SuppressWarnings("unchecked")
     private void traverseChildren(T current, T parent) {
         for (T elem : storage.keySet()) {
-            // TODO: add other parameters to "equals"
             if (current.nodeEquals(current, elem)) {
                 current = elem;
                 if (parent != null) {
