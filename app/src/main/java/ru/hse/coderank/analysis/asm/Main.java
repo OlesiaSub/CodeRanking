@@ -34,9 +34,18 @@ public class Main {
                 }
             }
         }
+        graph.constructGraph();
         System.out.println("FIN");
         for (MethodNode m : graph.storage.keySet()) {
+            System.out.println("\nNEW METHOD");
             System.out.println(m.name);
+            if (!graph.edges.get(m).isEmpty()) {
+                System.out.println("EDGES");
+
+                for (MethodNode me : graph.edges.get(m)) {
+                    System.out.println(me.name);
+                }
+            }
         }
     }
 }

@@ -53,7 +53,7 @@ public class ClassDescriptor extends ClassVisitor {
     @Override
     public MethodVisitor visitMethod(int access, String name,
                                      String desc, String signature, String[] exceptions) {
-        String actualName = actualClassName + ' ' + name;
+        String actualName = (actualClassName + '.' + name).replace('/', '.');
         System.out.println("ACTUAL: " + actualName + desc);
         MethodNode parent = new MethodNode(actualName, desc);
         ReferencedMethodsVisitor ref = new ReferencedMethodsVisitor(parent);

@@ -19,7 +19,7 @@ public class ReferencedMethodsVisitor extends MethodVisitor {
 
     void getReferenceInfo(String owner, String name, String desc) {
         if (Configuration.processPackage(owner)) {
-            String actualName = Type.getObjectType(owner).getClassName() + "." + name;
+            String actualName = (Type.getObjectType(owner).getClassName() + "." + name).replace('/', '.');
             System.out.println("REF: " + actualName + " " + desc);
             parent.children.add(new MethodNode(actualName, desc));
         }

@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Graph<T extends Node> {
-    public HashMap <T, Boolean> storage = new HashMap<>();
+    public HashMap<T, Boolean> storage = new HashMap<>();
     public HashMap<T, ArrayList<T>> edges = new HashMap<>();
 
     public void constructGraph() {
@@ -16,19 +16,30 @@ public class Graph<T extends Node> {
         }
         for (Map.Entry<T, Boolean> entry : storage.entrySet()) {
             if (!entry.getValue()) {
-                traverseChildren(entry.getKey());
+                traverseChildren(entry.getKey(), null);
             }
         }
     }
 
-    private void traverseChildren(T current) {
+    // TODO : fix generics
+    @SuppressWarnings("unchecked")
+    private void traverseChildren(T current, T parent) {
+        for (T elem : storage.keySet()) {
+            // TODO: add other parameters to "equals"
+            if (current.nodeEquals(current, elem)) {
+                current = elem;
+                if (parent != null) {
+                    addEdge(parent, current);
+                }
+                break;
+            }
+        }
         if (storage.get(current)) {
             return;
         }
-        // TODO : fix generics
+        storage.put(current, true);
         for (int i = 0; i < current.getChildren().size(); i++) {
-            addEdge(current, (T) current.getChildren().get(i));
-            traverseChildren((T) current.getChildren().get(i));
+            traverseChildren((T) current.getChildren().get(i), current);
         }
     }
 
