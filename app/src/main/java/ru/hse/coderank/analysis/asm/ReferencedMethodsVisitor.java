@@ -6,9 +6,9 @@ import org.objectweb.asm.Type;
 
 public class ReferencedMethodsVisitor extends MethodVisitor {
 
-    public MethodNode parent;
+    public Node<MethodNode> parent;
 
-    public ReferencedMethodsVisitor(MethodNode parent) {
+    public ReferencedMethodsVisitor(Node<MethodNode> parent) {
         super(Opcodes.ASM7);
         this.parent = parent;
     }
@@ -16,8 +16,10 @@ public class ReferencedMethodsVisitor extends MethodVisitor {
     void getReferenceInfo(String owner, String name, String desc) {
         if (Configuration.processPackage(owner)) {
             String actualName = (Type.getObjectType(owner).getClassName() + "." + name).replace('/', '.');
-            System.out.println("REF: " + actualName + " " + desc);
-            parent.children.add(new MethodNode(actualName, desc));
+//            System.out.println("REF: " + actualName + " " + desc);
+            Node<MethodNode> child = MethodNode.createNode();
+            child.payload = new MethodNode(actualName, desc);
+            parent.getChildren().add(child);
         }
     }
 

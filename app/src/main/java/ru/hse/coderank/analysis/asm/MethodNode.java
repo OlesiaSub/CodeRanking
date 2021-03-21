@@ -1,20 +1,38 @@
 package ru.hse.coderank.analysis.asm;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class MethodNode extends Node {
+public class MethodNode {
+
+    public String name;
+    public String desc;
+    public boolean used;
+    public List<Node<MethodNode>> children;
 
     public MethodNode(String name, String desc) {
         this.name = name;
         this.desc = desc;
-        this.children = null;
-        this.used = false;
-        this.children = new ArrayList<>();
+        used = false;
+        children = new ArrayList<>();
     }
 
-    @Override
-    @SuppressWarnings("unchecked")
-    public ArrayList<MethodNode> getChildren() {
-        return children;
+    public boolean nodeEquals(MethodNode other) {
+        return name.equals(other.name) && desc.equals(other.desc);
+    }
+
+    public static Node<MethodNode> createNode() {
+        return new Node<>() {
+
+            @Override
+            public List<Node<MethodNode>> getChildren() {
+                return payload.children;
+            }
+
+            @Override
+            public boolean nodeEquals(Node<MethodNode> other) {
+                return payload.nodeEquals(other.payload);
+            }
+        };
     }
 }

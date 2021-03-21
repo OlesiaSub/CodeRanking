@@ -13,7 +13,7 @@ import ru.hse.coderank.analysis.graph.Graph;
 
 public class Main {
 
-    public static Graph <MethodNode> graph = new Graph<>();
+    public static Graph<MethodNode> graph = new Graph<>();
 
     public static void main(String[] args) throws IOException {
         String jarPath = args[0];
@@ -29,24 +29,21 @@ public class Main {
                     ClassReader re = new ClassReader(stream);
                     ClassDescriptor cv = new ClassDescriptor(stream);
                     re.accept(cv, 0);
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
             }
         }
 
         graph.constructGraph();
 
-        // Print graph
         System.out.println("FIN");
-        for (MethodNode m : graph.storage.keySet()) {
+        for (Node<MethodNode> m : graph.storage.keySet()) {
             System.out.println("\nNEW METHOD");
-            System.out.println(m.name);
+            System.out.println(m.payload.name);
             if (!graph.edges.get(m).isEmpty()) {
                 System.out.println("EDGES");
 
-                for (MethodNode me : graph.edges.get(m)) {
-                    System.out.println(me.name);
+                for (Node<MethodNode> me : graph.edges.get(m)) {
+                    System.out.println(me.payload.name);
                 }
             }
         }

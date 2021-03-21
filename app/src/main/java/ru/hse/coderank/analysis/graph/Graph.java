@@ -6,26 +6,24 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Graph<T extends Node> {
-    public HashMap<T, Boolean> storage = new HashMap<>();
-    public HashMap<T, ArrayList<T>> edges = new HashMap<>();
+public class Graph<T> {
+    public HashMap<Node<T>, Boolean> storage = new HashMap<>();
+    public HashMap<Node<T>, ArrayList<Node<T>>> edges = new HashMap<>();
 
     public void constructGraph() {
-        for (Map.Entry<T, Boolean> entry : storage.entrySet()) {
+        for (Map.Entry<Node<T>, Boolean> entry : storage.entrySet()) {
             edges.put(entry.getKey(), new ArrayList<>());
         }
-        for (Map.Entry<T, Boolean> entry : storage.entrySet()) {
+        for (Map.Entry<Node<T>, Boolean> entry : storage.entrySet()) {
             if (!entry.getValue()) {
                 traverseChildren(entry.getKey(), null);
             }
         }
     }
 
-    // TODO : fix generics
-    @SuppressWarnings("unchecked")
-    private void traverseChildren(T current, T parent) {
-        for (T elem : storage.keySet()) {
-            if (current.nodeEquals(current, elem)) {
+    private void traverseChildren(Node<T> current, Node<T> parent) {
+        for (Node<T> elem : storage.keySet()) {
+            if (current.nodeEquals(elem)) {
                 current = elem;
                 if (parent != null) {
                     addEdge(parent, current);
@@ -38,11 +36,11 @@ public class Graph<T extends Node> {
         }
         storage.put(current, true);
         for (int i = 0; i < current.getChildren().size(); i++) {
-            traverseChildren((T) current.getChildren().get(i), current);
+            traverseChildren(current.getChildren().get(i), current);
         }
     }
 
-    private void addEdge(T parent, T child) {
+    private void addEdge(Node<T> parent, Node<T> child) {
         edges.get(parent).add(child);
     }
 }
