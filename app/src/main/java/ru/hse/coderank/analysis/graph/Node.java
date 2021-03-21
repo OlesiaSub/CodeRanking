@@ -13,4 +13,6 @@ public abstract class Node<T> {
     public abstract boolean isUsed();
 
     public abstract void setUsed();
+
+    public abstract String getName();
 }

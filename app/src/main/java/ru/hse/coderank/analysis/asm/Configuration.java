@@ -9,7 +9,7 @@ public class Configuration {
     private Properties properties;
     private static String[] packages = new String[0];
 
-    Configuration() throws IOException {
+    public Configuration() throws IOException {
         InputStream input = new FileInputStream("app/src/main/resources/analysis.properties");
         properties = new Properties();
         properties.load(input);

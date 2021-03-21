@@ -55,6 +55,11 @@ public class MethodNode {
             public void setUsed() {
                 payload.setUsed();
             }
+
+            @Override
+            public String getName() {
+                return payload.name;
+            }
         };
     }
 }

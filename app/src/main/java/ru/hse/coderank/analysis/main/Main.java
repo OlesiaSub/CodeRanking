@@ -1,4 +1,4 @@
-package ru.hse.coderank.analysis.asm;
+package ru.hse.coderank.analysis.main;
 
 import java.io.BufferedInputStream;
 import java.io.InputStream;
@@ -8,9 +8,12 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 import org.objectweb.asm.ClassReader;
+import ru.hse.coderank.analysis.asm.ClassDescriptor;
+import ru.hse.coderank.analysis.asm.Configuration;
 import ru.hse.coderank.analysis.graph.Graph;
 import ru.hse.coderank.analysis.graph.MethodNode;
 import ru.hse.coderank.analysis.graph.Node;
+import ru.hse.coderank.analysis.pagerank.PageGraph;
 
 public class Main {
 
@@ -47,6 +50,11 @@ public class Main {
                 }
             }
         }
+
+        System.out.println("\nPAGERANK:");
+        PageGraph<MethodNode> pageGraph = new PageGraph<>(graph.storage, graph.edges, graph.parents);
+        pageGraph.launchPageRank(100);
+        pageGraph.getPageRank();
     }
 }
 

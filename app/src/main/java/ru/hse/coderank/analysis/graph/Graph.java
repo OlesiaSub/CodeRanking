@@ -3,12 +3,15 @@ package ru.hse.coderank.analysis.graph;
 import java.util.*;
 
 public class Graph<T> {
+
     public HashSet<Node<T>> storage = new HashSet<>();
     public HashMap<Node<T>, List<Node<T>>> edges = new HashMap<>();
+    public HashMap<Node<T>, List<Node<T>>> parents = new HashMap<>();
 
     public void constructGraph() {
         for (Node<T> entry : storage) {
             edges.put(entry, new LinkedList<>());
+            parents.put(entry, new LinkedList<>());
         }
         for (Node<T> entry : storage) {
             if (!entry.isUsed()) {
@@ -23,6 +26,7 @@ public class Graph<T> {
                 current = elem;
                 if (parent != null) {
                     addEdge(parent, current);
+                    addParent(parent, current);
                 }
                 break;
             }
@@ -39,5 +43,9 @@ public class Graph<T> {
 
     private void addEdge(Node<T> parent, Node<T> child) {
         edges.get(parent).add(child);
+    }
+
+    private void addParent(Node<T> parent, Node<T> child) {
+        parents.get(child).add(parent);
     }
 }
