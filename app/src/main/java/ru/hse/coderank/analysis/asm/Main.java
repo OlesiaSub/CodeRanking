@@ -8,8 +8,9 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.Type;
 import ru.hse.coderank.analysis.graph.Graph;
+import ru.hse.coderank.analysis.graph.MethodNode;
+import ru.hse.coderank.analysis.graph.Node;
 
 public class Main {
 
@@ -34,16 +35,15 @@ public class Main {
         }
 
         graph.constructGraph();
-
-        System.out.println("FIN");
-        for (Node<MethodNode> m : graph.storage.keySet()) {
+//        System.out.println("FIN");
+        for (Node<MethodNode> m : graph.storage) {
             System.out.println("\nNEW METHOD");
-            System.out.println(m.payload.name);
+            System.out.println(m.payload.getName());
             if (!graph.edges.get(m).isEmpty()) {
                 System.out.println("EDGES");
 
                 for (Node<MethodNode> me : graph.edges.get(m)) {
-                    System.out.println(me.payload.name);
+                    System.out.println(me.payload.getName());
                 }
             }
         }

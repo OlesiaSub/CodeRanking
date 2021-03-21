@@ -1,20 +1,32 @@
-package ru.hse.coderank.analysis.asm;
+package ru.hse.coderank.analysis.graph;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class MethodNode {
 
-    public String name;
-    public String desc;
-    public boolean used;
-    public List<Node<MethodNode>> children;
+    private final String name;
+    private final String desc;
+    private boolean used;
+    private final List<Node<MethodNode>> children;
 
     public MethodNode(String name, String desc) {
         this.name = name;
         this.desc = desc;
         used = false;
-        children = new ArrayList<>();
+        children = new LinkedList<>();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    private boolean isUsed() {
+        return used;
+    }
+
+    private void setUsed() {
+        used = true;
     }
 
     public boolean nodeEquals(MethodNode other) {
@@ -32,6 +44,16 @@ public class MethodNode {
             @Override
             public boolean nodeEquals(Node<MethodNode> other) {
                 return payload.nodeEquals(other.payload);
+            }
+
+            @Override
+            public boolean isUsed() {
+                return payload.isUsed();
+            }
+
+            @Override
+            public void setUsed() {
+                payload.setUsed();
             }
         };
     }

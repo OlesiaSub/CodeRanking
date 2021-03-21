@@ -3,6 +3,8 @@ package ru.hse.coderank.analysis.asm;
 import java.io.InputStream;
 
 import org.objectweb.asm.*;
+import ru.hse.coderank.analysis.graph.MethodNode;
+import ru.hse.coderank.analysis.graph.Node;
 
 public class ClassDescriptor extends ClassVisitor {
 
@@ -39,7 +41,7 @@ public class ClassDescriptor extends ClassVisitor {
         Node<MethodNode> parent = MethodNode.createNode();
         parent.payload = new MethodNode(actualName, desc);
         ReferencedMethodsVisitor ref = new ReferencedMethodsVisitor(parent);
-        Main.graph.storage.put(parent, false);
+        Main.graph.storage.add(parent);
         return ref;
     }
 

@@ -3,6 +3,8 @@ package ru.hse.coderank.analysis.asm;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
+import ru.hse.coderank.analysis.graph.MethodNode;
+import ru.hse.coderank.analysis.graph.Node;
 
 public class ReferencedMethodsVisitor extends MethodVisitor {
 

@@ -1,28 +1,24 @@
 package ru.hse.coderank.analysis.graph;
 
-import ru.hse.coderank.analysis.asm.Node;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Graph<T> {
-    public HashMap<Node<T>, Boolean> storage = new HashMap<>();
-    public HashMap<Node<T>, ArrayList<Node<T>>> edges = new HashMap<>();
+    public HashSet<Node<T>> storage = new HashSet<>();
+    public HashMap<Node<T>, List<Node<T>>> edges = new HashMap<>();
 
     public void constructGraph() {
-        for (Map.Entry<Node<T>, Boolean> entry : storage.entrySet()) {
-            edges.put(entry.getKey(), new ArrayList<>());
+        for (Node<T> entry : storage) {
+            edges.put(entry, new LinkedList<>());
         }
-        for (Map.Entry<Node<T>, Boolean> entry : storage.entrySet()) {
-            if (!entry.getValue()) {
-                traverseChildren(entry.getKey(), null);
+        for (Node<T> entry : storage) {
+            if (!entry.isUsed()) {
+                traverseChildren(entry, null);
             }
         }
     }
 
     private void traverseChildren(Node<T> current, Node<T> parent) {
-        for (Node<T> elem : storage.keySet()) {
+        for (Node<T> elem : storage) {
             if (current.nodeEquals(elem)) {
                 current = elem;
                 if (parent != null) {
@@ -31,10 +27,11 @@ public class Graph<T> {
                 break;
             }
         }
-        if (storage.get(current)) {
+        if (current.isUsed()) {
             return;
         }
-        storage.put(current, true);
+        storage.add(current);
+        current.setUsed();
         for (int i = 0; i < current.getChildren().size(); i++) {
             traverseChildren(current.getChildren().get(i), current);
         }
