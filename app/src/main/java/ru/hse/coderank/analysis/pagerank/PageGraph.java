@@ -62,9 +62,6 @@ public class PageGraph<T> {
     }
 
     public void getPageRank() {
-        ArrayList<PageNode> sortedNodes = new ArrayList<>(nodes);
-        Comparator<PageNode> comparator = (o1, o2) -> o1.pagerank > o2.pagerank ? 1 : 0;
-        sortedNodes.sort(comparator);
         nodes.stream()
                 .sorted(Comparator.comparingDouble((PageNode x) -> x.pagerank).reversed())
                 .forEach(x -> {
