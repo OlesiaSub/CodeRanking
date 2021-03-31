@@ -53,7 +53,7 @@ public class Main {
 
         System.out.println("\nPAGERANK:");
         PageGraph<MethodNode> pageGraph = new PageGraph<>(graph.storage, graph.edges, graph.parents);
-        pageGraph.launchPageRank(100);
+        pageGraph.launchPageRank(50);
         pageGraph.getPageRank();
     }
 }
