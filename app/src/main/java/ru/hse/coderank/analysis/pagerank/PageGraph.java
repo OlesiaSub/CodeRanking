@@ -5,15 +5,15 @@ import ru.hse.coderank.analysis.graph.Node;
 import java.util.*;
 
 public class PageGraph<T> {
-    public static int index = 0;
-    public static final double dampingFactor = 0.15;
-    public static double pageSetSize;
-    public HashMap<Node<T>, PageNode> storage = new HashMap<>();
-    public HashMap<PageNode, Node<T>> revStorage = new HashMap<>();
-    public HashSet<PageNode> nodes = new HashSet<>();
+    private static int index = 0;
+    private static final double dampingFactor = 0.85;
+    private static double pageSetSize;
+    private final HashMap<PageNode, Node<T>> revStorage = new HashMap<>();
+    private final HashSet<PageNode> nodes = new HashSet<>();
 
     public PageGraph(HashSet<Node<T>> initStorage, HashMap<Node<T>, List<Node<T>>> edges,
                      HashMap<Node<T>, List<Node<T>>> parents) {
+        HashMap<Node<T>, PageNode> storage = new HashMap<>();
         for (Node<T> node : initStorage) {
             PageNode currentNode = new PageNode(index++);
             storage.put(node, currentNode);
