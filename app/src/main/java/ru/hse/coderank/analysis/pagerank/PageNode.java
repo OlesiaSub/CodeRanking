@@ -6,7 +6,7 @@ import java.util.List;
 public class PageNode {
 
     public int index;
-    public double pagerank = 100;
+    public double pagerank = 1;
     public List<PageNode> parents = new LinkedList<>();
     public List<PageNode> neighbours = new LinkedList<>();
 
