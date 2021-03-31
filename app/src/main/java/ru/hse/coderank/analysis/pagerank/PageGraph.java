@@ -57,7 +57,7 @@ public class PageGraph<T> {
         for (PageNode node : currentNode.parents) {
             sum += node.pagerank / node.neighbours.size();
         }
-        double randomFactor= dampingFactor / pageSetSize;
+        double randomFactor = dampingFactor / pageSetSize;
         currentNode.pagerank = randomFactor + (1 - dampingFactor) * sum;
     }
 
@@ -65,11 +65,13 @@ public class PageGraph<T> {
         ArrayList<PageNode> sortedNodes = new ArrayList<>(nodes);
         Comparator<PageNode> comparator = (o1, o2) -> o1.pagerank > o2.pagerank ? 1 : 0;
         sortedNodes.sort(comparator);
-        for (PageNode node : sortedNodes) {
-            System.out.println(revStorage.get(node).getName());
-            System.out.println(node.pagerank);
-            System.out.print("\n");
-        }
+        nodes.stream()
+                .sorted(Comparator.comparingDouble((PageNode x) -> x.pagerank).reversed())
+                .forEach(x -> {
+                    System.out.println(revStorage.get(x).getName());
+                    System.out.println(x.pagerank);
+                    System.out.print("\n");
+                });
     }
 
 }

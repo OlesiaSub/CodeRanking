@@ -24,7 +24,7 @@ public class Graph<T> {
         for (Node<T> elem : storage) {
             if (current.nodeEquals(elem)) {
                 current = elem;
-                if (parent != null) {
+                if (parent != null && !current.nodeEquals(parent)) {
                     addEdge(parent, current);
                     addParent(parent, current);
                 }
@@ -36,6 +36,7 @@ public class Graph<T> {
         }
         storage.add(current);
         current.setUsed();
+
         for (int i = 0; i < current.getChildren().size(); i++) {
             traverseChildren(current.getChildren().get(i), current);
         }
