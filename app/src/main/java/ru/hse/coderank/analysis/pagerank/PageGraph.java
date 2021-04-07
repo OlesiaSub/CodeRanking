@@ -6,10 +6,15 @@ import java.util.*;
 
 public class PageGraph<T> {
     private static int index = 0;
-    private static final double dampingFactor = 0.85;
+    private static final double dampingFactor = 0.15;
     private static double pageSetSize;
     private final HashMap<PageNode, Node<T>> revStorage = new HashMap<>();
-    private final HashSet<PageNode> nodes = new HashSet<>();
+    public HashSet<PageNode> nodes = new HashSet<>();
+
+    public PageGraph(HashSet<PageNode> nodes) {
+        this.nodes = nodes;
+        pageSetSize = nodes.size();
+    }
 
     public PageGraph(HashSet<Node<T>> initStorage, HashMap<Node<T>, List<Node<T>>> edges,
                      HashMap<Node<T>, List<Node<T>>> parents) {
@@ -65,9 +70,13 @@ public class PageGraph<T> {
         nodes.stream()
                 .sorted(Comparator.comparingDouble((PageNode x) -> x.pagerank).reversed())
                 .forEach(x -> {
-                    System.out.println(revStorage.get(x).getName());
-                    System.out.println(x.pagerank);
-                    System.out.print("\n");
+                    try {
+                        System.out.println(revStorage.get(x).getName());
+                        System.out.println(x.pagerank);
+                        System.out.print("\n");
+                    } catch (IllegalArgumentException e) {
+                        e.printStackTrace();
+                    }
                 });
     }
 
