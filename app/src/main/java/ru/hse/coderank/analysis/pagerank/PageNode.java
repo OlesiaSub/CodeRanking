@@ -14,10 +14,4 @@ public class PageNode {
         this.index = index;
     }
 
-    public PageNode(int index, List<PageNode> parents, List<PageNode> neighbours) {
-        this.index = index;
-        this.parents = parents;
-        this.neighbours = neighbours;
-    }
-
 }

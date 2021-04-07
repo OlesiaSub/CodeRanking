@@ -15,6 +15,8 @@ import ru.hse.coderank.analysis.graph.MethodNode;
 import ru.hse.coderank.analysis.graph.Node;
 import ru.hse.coderank.analysis.pagerank.PageGraph;
 
+// temporary argument: "/home/olesya/HSE_2020-1/java/maze/out/artifacts/maze_jar/maze.jar"
+
 public class Main {
 
     public static Graph<MethodNode> graph = new Graph<>();
