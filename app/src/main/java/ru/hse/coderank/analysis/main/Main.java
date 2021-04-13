@@ -16,12 +16,15 @@ import ru.hse.coderank.analysis.graph.Node;
 import ru.hse.coderank.analysis.pagerank.PageGraph;
 
 // temporary argument: "/home/olesya/HSE_2020-1/java/maze/out/artifacts/maze_jar/maze.jar"
+// "/home/olesya/github_scala/scala/out/artifacts/scala_jar2/scala.jar"
+// "/home/olesya/Downloads/junit-4.13.2.jar"
 
 public class Main {
 
     public static Graph<MethodNode> graph = new Graph<>();
 
     public static void main(String[] args) throws IOException {
+        long time = System.currentTimeMillis();
         String jarPath = args[0];
         JarFile jarFile = new JarFile(jarPath);
         Enumeration<JarEntry> entries = jarFile.entries();
@@ -30,6 +33,7 @@ public class Main {
         while (entries.hasMoreElements()) {
             JarEntry entry = entries.nextElement();
             String name = entry.getName();
+            System.out.println(name);
             if (name.endsWith(".class") && Configuration.processPackage(name)) {
                 try (InputStream stream = new BufferedInputStream(jarFile.getInputStream(entry), 1024)) {
                     ClassReader re = new ClassReader(stream);
@@ -40,7 +44,6 @@ public class Main {
         }
 
         graph.constructGraph();
-//        System.out.println("FIN");
         for (Node<MethodNode> m : graph.storage) {
             System.out.println("\nNEW METHOD");
             System.out.println(m.payload.getName());
@@ -57,6 +60,8 @@ public class Main {
         PageGraph<MethodNode> pageGraph = new PageGraph<>(graph.storage, graph.edges, graph.parents);
         pageGraph.launchPageRank(50);
         pageGraph.getPageRank();
+
+        System.out.println(System.currentTimeMillis() - time);
     }
 }
 

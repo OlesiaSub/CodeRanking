@@ -14,6 +14,17 @@ public class Graph<T> {
             parents.put(entry, new LinkedList<>());
         }
         for (Node<T> entry : storage) {
+/*
+
+            DEBUG
+            System.out.println("ITERATION: " + entry.getName());
+            System.err.flush();
+            System.out.flush();
+            if (entry.getName().contains("ErrorReportingRunner.runCause")) {
+                System.out.println("Here");
+            }
+
+ */
             if (!entry.isUsed()) {
                 traverseChildren(entry, null);
             }
@@ -24,6 +35,9 @@ public class Graph<T> {
         for (Node<T> elem : storage) {
             if (current.nodeEquals(elem)) {
                 current = elem;
+                if (current.getName().contains("isPublic")) {
+                    System.out.println("HERE " + current.getName());
+                }
                 if (parent != null && !current.nodeEquals(parent)) {
                     addEdge(parent, current);
                     addParent(parent, current);
@@ -34,7 +48,7 @@ public class Graph<T> {
         if (current.isUsed()) {
             return;
         }
-        storage.add(current);
+//        storage.add(current);
         current.setUsed();
 
         for (int i = 0; i < current.getChildren().size(); i++) {
@@ -47,6 +61,26 @@ public class Graph<T> {
     }
 
     private void addParent(Node<T> parent, Node<T> child) {
+/*
+
+        DEBUG
+        if (parents.get(child) == null) {
+            System.out.println("ERR " + child.getName());
+            for (Node<T> par : parents.keySet()) {
+                if (par.getName().contains("isPublic")) {
+                    System.out.println("HERE " + par.getName());
+                    System.out.println(parents.get(par));
+                }
+            }
+            for (Node<T> par : storage) {
+                if (par.getName().contains("isPublic")) {
+                    System.out.println("HERE2 " + par.getName());
+                    System.out.println(parents.get(par));
+                }
+            }
+        }
+
+ */
         parents.get(child).add(parent);
     }
 }
