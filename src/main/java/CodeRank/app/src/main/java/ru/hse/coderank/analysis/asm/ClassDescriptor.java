@@ -1,0 +1,43 @@
+package CodeRank.app.src.main.java.ru.hse.coderank.analysis.asm;
+
+import java.io.InputStream;
+
+import org.objectweb.asm.*;
+import CodeRank.app.src.main.java.ru.hse.coderank.analysis.graph.MethodNode;
+import CodeRank.app.src.main.java.ru.hse.coderank.analysis.graph.Node;
+import CodeRank.app.src.main.java.ru.hse.coderank.analysis.main.Main;
+
+public class ClassDescriptor extends ClassVisitor {
+
+    public InputStream className;
+    public String actualClassName;
+
+    public ClassDescriptor(InputStream stream) {
+        super(Opcodes.ASM7);
+        className = stream;
+    }
+
+    @Override
+    public void visit(int version, int access, String name,
+                      String signature, String superName, String[] interfaces) {
+        actualClassName = name;
+    }
+
+    @Override
+    public FieldVisitor visitField(int access, String name, String desc,
+                                   String signature, Object value) {
+        return null;
+    }
+
+    @Override
+    public MethodVisitor visitMethod(int access, String name,
+                                     String desc, String signature, String[] exceptions) {
+        String actualName = (actualClassName + '.' + name).replace('/', '.');
+        Node<MethodNode> parent = MethodNode.createNode();
+        parent.payload = new MethodNode(actualName, desc);
+        ReferencedMethodsVisitor ref = new ReferencedMethodsVisitor(parent);
+        Main.graph.storage.add(parent);
+        return ref;
+    }
+
+}
