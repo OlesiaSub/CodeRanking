@@ -7,10 +7,11 @@ import java.util.Properties;
 
 public class Configuration {
     private Properties properties;
+    private static String propertiesFileName;
     private static String[] packages = new String[0];
 
     public Configuration() throws IOException {
-        InputStream input = new FileInputStream("/home/olesya/HSE_2020-1/CodeRanking/src/main/java/CodeRank/app/src/main/resources/analysis.properties");
+        InputStream input = new FileInputStream(propertiesFileName);
         properties = new Properties();
         properties.load(input);
 
@@ -26,5 +27,9 @@ public class Configuration {
             }
         }
         return false;
+    }
+
+    public static void setConfigProperty(String propertiesFileName) {
+        Configuration.propertiesFileName = propertiesFileName;
     }
 }

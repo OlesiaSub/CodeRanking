@@ -1,13 +1,13 @@
 //Uncomment to apply plugin
 
-//buildscript {
-//    repositories {
-//        mavenLocal() // plugin published to maven local
-//    }
-//    dependencies {
-//        classpath 'org.coderank:CodeRanking:0.0.1' // plugin’s artifact
-//    }
-//}
+buildscript {
+    repositories {
+        mavenLocal() // plugin published to maven local
+    }
+    dependencies {
+        classpath 'org.coderank:CodeRanking:0.0.1' // plugin’s artifact
+    }
+}
 
 plugins {
     id 'java-gradle-plugin'
@@ -54,8 +54,10 @@ gradlePlugin {
 
 // Uncomment to apply plugin
 
-//apply plugin: 'org.coderank.CodeRanking' // applying plugin
-//
-//coderank {
-//    inputJarFileName = '/home/olesya/Downloads/junit-4.13.2.jar'
-//}
+apply plugin: 'org.coderank.CodeRanking' // applying plugin
+
+coderank {
+    //inputJarFileName = '/home/olesya/Downloads/junit-4.13.2.jar'
+    inputJarFileName = '/home/olesya/HSE_2020-1/java/maze/out/artifacts/maze_jar/maze.jar'
+    propertiesFileName = '/home/olesya/HSE_2020-1/CodeRank/src/main/java/CodeRank/app/src/main/resources/analysis.properties'
+}
