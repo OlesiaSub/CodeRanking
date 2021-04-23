@@ -70,7 +70,7 @@ public class Main {
 
         System.out.print("\nSTARTING PAGERANK AT ");
         System.out.println(System.currentTimeMillis() - time);
-        PageGraph<MethodNode> pageGraph = new PageGraph<>(graph.storage, graph.edges, graph.parents);
+        PageGraph<MethodNode> pageGraph = new PageGraph<>(graph.getGraphStorage(), graph.getGraphEdges(), graph.getGraphParents());
         pageGraph.launchPageRank(50);
         pageGraph.getPageRank();
 

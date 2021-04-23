@@ -1,13 +1,31 @@
 package CodeRank.app.src.main.impl.graph;
 
+import CodeRank.app.src.main.impl.graphbuilder.GraphBuilder;
+
 import java.util.*;
 
-public class Graph<T> {
+public class Graph<T> implements GraphBuilder<T> {
 
-    public HashSet<Node<T>> storage = new HashSet<>();
-    public HashMap<Node<T>, List<Node<T>>> edges = new HashMap<>();
-    public HashMap<Node<T>, List<Node<T>>> parents = new HashMap<>();
+    private final HashSet<Node<T>> storage = new HashSet<>();
+    private final HashMap<Node<T>, List<Node<T>>> edges = new HashMap<>();
+    private final HashMap<Node<T>, List<Node<T>>> parents = new HashMap<>();
 
+    @Override
+    public HashSet<Node<T>> getGraphStorage() {
+        return storage;
+    }
+
+    @Override
+    public HashMap<Node<T>, List<Node<T>>> getGraphEdges() {
+        return edges;
+    }
+
+    @Override
+    public HashMap<Node<T>, List<Node<T>>> getGraphParents() {
+        return parents;
+    }
+
+    @Override
     public void constructGraph() {
         for (Node<T> entry : storage) {
             edges.put(entry, new LinkedList<>());

@@ -5,6 +5,7 @@ import org.gradle.api.Project
 
 import CodeRank.app.src.main.impl.asm.Configuration;
 import CodeRank.app.src.main.impl.main.Main
+import CodeRank.app.src.main.impl.graphbuilder.GraphBuilderLoader
 
 class CodeRankPlugin : Plugin<Project> {
     override fun apply(project: Project) {
@@ -15,7 +16,9 @@ class CodeRankPlugin : Plugin<Project> {
                 //Main.main(args)
                 println("Starting task codeRank snd...")
                 Configuration.setConfigProperty(extension.propertiesFileName.get())
-                val args2 = arrayOf(extension.inputJarFileName.get())
+                val inputJarFileName = extension.inputJarFileName.get()
+                val graphBuilderLocation = extension.graphBuilderLocation.get()
+                val args2 = arrayOf(inputJarFileName, graphBuilderLocation)
                 Main.main(args2)
             }
         }.apply {

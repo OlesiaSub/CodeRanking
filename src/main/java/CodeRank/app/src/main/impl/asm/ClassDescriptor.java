@@ -36,7 +36,7 @@ public class ClassDescriptor extends ClassVisitor {
         Node<MethodNode> parent = MethodNode.createNode();
         parent.payload = new MethodNode(actualName, desc);
         ReferencedMethodsVisitor ref = new ReferencedMethodsVisitor(parent);
-        Main.graph.storage.add(parent);
+        Main.graph.getGraphStorage().add(parent);
         return ref;
     }
 
