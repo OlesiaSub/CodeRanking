@@ -5,8 +5,8 @@ import static org.gradle.internal.impldep.org.junit.Assert.assertTrue;
 //import static org.junit.Assert.*;
 
 import org.testng.annotations.Test;
-import CodeRank.app.src.main.java.ru.hse.coderank.analysis.pagerank.PageGraph;
-import CodeRank.app.src.main.java.ru.hse.coderank.analysis.pagerank.PageNode;
+import CodeRank.app.src.main.impl.pagerank.PageGraph;
+import CodeRank.app.src.main.impl.pagerank.PageNode;
 
 import java.util.*;
 

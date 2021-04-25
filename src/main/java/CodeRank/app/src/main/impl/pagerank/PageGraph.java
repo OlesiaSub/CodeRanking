@@ -43,6 +43,7 @@ public class PageGraph<T> {
         }
 
         pageSetSize = nodes.size();
+        System.out.println("constructing " + pageSetSize);
     }
 
     public void launchPageRank(int iterations) {

@@ -3,11 +3,15 @@ package CodeRank.app.src.main.impl.main;
 import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 import CodeRank.app.src.main.impl.asm.Configuration;
+import CodeRank.app.src.main.impl.graph.Node;
+import CodeRank.app.src.main.impl.graphbuilder.GraphBuilderException;
+import CodeRank.app.src.main.impl.graphbuilder.GraphBuilderLoader;
 import CodeRank.app.src.main.impl.pagerank.PageGraph;
 import org.objectweb.asm.ClassReader;
 import CodeRank.app.src.main.impl.asm.ClassDescriptor;
@@ -27,14 +31,21 @@ temporary arguments:
 public class Main {
 
     public static Graph<MethodNode> graph = new Graph<>();
+    public static GraphBuilderLoader<MethodNode> loader;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, GraphBuilderException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         long time = System.currentTimeMillis();
         String jarPath = args[0];
         System.out.println(jarPath);
         JarFile jarFile = new JarFile(jarPath);
         Enumeration<JarEntry> entries = jarFile.entries();
+
+        // to launch without plugin installation
+        // Configuration.setConfigProperty("/home/olesya/HSE_2020-1/CodeRank/src/main/java/CodeRank/app/src/main/resources/analysis.properties");
+
         new Configuration();
+        loader = new GraphBuilderLoader<>(args[1], args[2]);
+        loader.createInstance();
 
         while (entries.hasMoreElements()) {
             JarEntry entry = entries.nextElement();
@@ -48,19 +59,20 @@ public class Main {
             }
         }
 
-        graph.constructGraph();
 
         /*
 
         // GRAPH CONSTRUCTION OUTPUT
 
-        for (Node<MethodNode> m : graph.storage) {
+        graph.constructGraph();
+
+        for (Node<MethodNode> m : graph.getGraphStorage()) {
             System.out.println("\nNEW METHOD");
             System.out.println(m.payload.getName());
-            if (!graph.edges.get(m).isEmpty()) {
+            if (!graph.getGraphEdges().get(m).isEmpty()) {
                 System.out.println("EDGES");
 
-                for (Node<MethodNode> me : graph.edges.get(m)) {
+                for (Node<MethodNode> me : graph.getGraphEdges().get(m)) {
                     System.out.println(me.payload.getName());
                 }
             }
@@ -68,13 +80,11 @@ public class Main {
 
         */
 
-        System.out.print("\nSTARTING PAGERANK AT ");
-        System.out.println(System.currentTimeMillis() - time);
-        PageGraph<MethodNode> pageGraph = new PageGraph<>(graph.getGraphStorage(), graph.getGraphEdges(), graph.getGraphParents());
-        pageGraph.launchPageRank(50);
-        pageGraph.getPageRank();
+        loader.loadGraphBuilder();
+        loader.applyParameters();
 
         // TIME MEASUREMENT
+        
         long usedBytes = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
         System.out.print("FINAL TIME: ");
         System.out.println(System.currentTimeMillis() - time);

@@ -26,7 +26,7 @@ public class Graph<T> implements GraphBuilder<T> {
     }
 
     @Override
-    public void constructGraph() {
+    public HashSet<Node<T>> constructGraph() {
         for (Node<T> entry : storage) {
             edges.put(entry, new LinkedList<>());
             parents.put(entry, new LinkedList<>());
@@ -36,6 +36,7 @@ public class Graph<T> implements GraphBuilder<T> {
                 traverseChildren(entry, null);
             }
         }
+        return storage;
     }
 
     private void traverseChildren(Node<T> current, Node<T> parent) {
@@ -52,7 +53,6 @@ public class Graph<T> implements GraphBuilder<T> {
         if (current.isUsed()) {
             return;
         }
-//        storage.add(current);
         current.setUsed();
 
         for (int i = 0; i < current.getChildren().size(); i++) {

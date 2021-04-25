@@ -14,5 +14,5 @@ public interface GraphBuilder<T> {
 
     HashMap<Node<T>, List<Node<T>>> getGraphParents();
 
-    void constructGraph();
+    HashSet<Node<T>> constructGraph();
 }

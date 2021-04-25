@@ -10,7 +10,7 @@ import java.util.List;
 public class PageRankLauncher<T> {
 
     public void launch(HashSet<Node<T>> initStorage, HashMap<Node<T>, List<Node<T>>> edges,
-                              HashMap<Node<T>, List<Node<T>>> parents) {
+                       HashMap<Node<T>, List<Node<T>>> parents) {
         PageGraph<MethodNode> pageGraph = new PageGraph(initStorage, edges, parents);
         pageGraph.launchPageRank(50);
         pageGraph.getPageRank();
