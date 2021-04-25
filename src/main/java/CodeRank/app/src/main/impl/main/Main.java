@@ -26,6 +26,8 @@ temporary arguments:
 "/home/olesya/Downloads/junit-4.13.2.jar"
 "/home/olesya/HSE_2020-1/JARsmth/scala-library-2.12.13.jar"
 
+"/home/olesya/HSE_2020-1/java/maze/out/artifacts/maze_jar/maze.jar" "/home/olesya/HSE_2020-1/CodeRank/src/main/java/CodeRank/app/src/main/impl/javaLoader.jar" "CodeRank.app.src.main.impl.graph.Graph"
+
  */
 
 public class Main {
@@ -41,11 +43,11 @@ public class Main {
         Enumeration<JarEntry> entries = jarFile.entries();
 
         // to launch without plugin installation
-        // Configuration.setConfigProperty("/home/olesya/HSE_2020-1/CodeRank/src/main/java/CodeRank/app/src/main/resources/analysis.properties");
+        Configuration.setConfigProperty("/home/olesya/HSE_2020-1/CodeRank/src/main/java/CodeRank/app/src/main/resources/analysis.properties");
 
         new Configuration();
         loader = new GraphBuilderLoader<>(args[1], args[2]);
-        loader.createInstance();
+        loader.createInstanceFromJar();
 
         while (entries.hasMoreElements()) {
             JarEntry entry = entries.nextElement();

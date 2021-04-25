@@ -4,19 +4,20 @@ import CodeRank.app.src.main.impl.graph.Node;
 import CodeRank.app.src.main.impl.pagerank.PageRankLauncher;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 public class GraphBuilderLoader<T> {
-    private HashSet<Node<T>> builderStorage;
-    private HashMap<Node<T>, List<Node<T>>> builderEdges;
-    private HashMap<Node<T>, List<Node<T>>> builderParents;
     private final String graphBuilderLocation;
     private final String graphBuilderName;
     private Class<?> customGraphBuilder;
@@ -27,12 +28,24 @@ public class GraphBuilderLoader<T> {
         this.graphBuilderName = graphBuilderName;
     }
 
-    public void createInstance() throws MalformedURLException, ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-        File inputDirectory = new File(graphBuilderLocation);
-        ClassLoader classLoader = new URLClassLoader(
-                new URL[]{inputDirectory.toURI().toURL()},
-                this.getClass().getClassLoader()
-        );
+    public void createInstanceFromDirectory() throws GraphBuilderException {
+        try {
+            File inputDirectory = new File(graphBuilderLocation);
+            ClassLoader classLoader = new URLClassLoader(
+                    new URL[]{inputDirectory.toURI().toURL()},
+                    this.getClass().getClassLoader()
+            );
+            customGraphBuilder = classLoader.loadClass(graphBuilderName);
+            instance = customGraphBuilder.getDeclaredConstructor().newInstance();
+        } catch (Exception e) {
+            throw new GraphBuilderException("Unable to create instance.");
+        }
+    }
+
+    public void createInstanceFromJar() throws IOException, ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        JarFile jarFile = new JarFile(graphBuilderLocation);
+        URL[] urls = {new URL("jar:file:" + graphBuilderLocation + "!/")};
+        URLClassLoader classLoader = URLClassLoader.newInstance(urls);
         customGraphBuilder = classLoader.loadClass(graphBuilderName);
         instance = customGraphBuilder.getDeclaredConstructor().newInstance();
     }
@@ -52,14 +65,14 @@ public class GraphBuilderLoader<T> {
         try {
             Method getStorage = customGraphBuilder.getMethod("getGraphStorage");
             Object objectStorage = getStorage.invoke(instance);
-            builderStorage = (HashSet<Node<T>>) objectStorage;
+            HashSet<Node<T>> builderStorage = (HashSet<Node<T>>) objectStorage;
 
             Method getGraphEdges = customGraphBuilder.getMethod("getGraphEdges");
             Object objectEdges = getGraphEdges.invoke(instance);
-            builderEdges = (HashMap<Node<T>, List<Node<T>>>) objectEdges;
+            HashMap<Node<T>, List<Node<T>>> builderEdges = (HashMap<Node<T>, List<Node<T>>>) objectEdges;
 
             Method getGraphParents = customGraphBuilder.getMethod("getGraphParents");
-            builderParents = (HashMap<Node<T>, List<Node<T>>>) getGraphParents.invoke(instance);
+            HashMap<Node<T>, List<Node<T>>> builderParents = (HashMap<Node<T>, List<Node<T>>>) getGraphParents.invoke(instance);
             for (Node<T> node : builderParents.keySet()) {
                 System.out.println(node.payload.toString());
                 System.out.println("ff");
