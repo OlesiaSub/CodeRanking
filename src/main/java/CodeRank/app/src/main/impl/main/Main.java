@@ -38,7 +38,6 @@ public class Main {
     public static void main(String[] args) throws IOException, GraphBuilderException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         long time = System.currentTimeMillis();
         String jarPath = args[0];
-        System.out.println(jarPath);
         JarFile jarFile = new JarFile(jarPath);
         Enumeration<JarEntry> entries = jarFile.entries();
 

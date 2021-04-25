@@ -43,7 +43,6 @@ public class GraphBuilderLoader<T> {
     }
 
     public void createInstanceFromJar() throws IOException, ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-        JarFile jarFile = new JarFile(graphBuilderLocation);
         URL[] urls = {new URL("jar:file:" + graphBuilderLocation + "!/")};
         URLClassLoader classLoader = URLClassLoader.newInstance(urls);
         customGraphBuilder = classLoader.loadClass(graphBuilderName);
@@ -73,10 +72,6 @@ public class GraphBuilderLoader<T> {
 
             Method getGraphParents = customGraphBuilder.getMethod("getGraphParents");
             HashMap<Node<T>, List<Node<T>>> builderParents = (HashMap<Node<T>, List<Node<T>>>) getGraphParents.invoke(instance);
-            for (Node<T> node : builderParents.keySet()) {
-                System.out.println(node.payload.toString());
-                System.out.println("ff");
-            }
 
             PageRankLauncher<T> launcher = new PageRankLauncher<>();
             launcher.launch(builderStorage, builderEdges, builderParents);

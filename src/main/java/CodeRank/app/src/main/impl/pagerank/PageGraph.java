@@ -2,6 +2,8 @@ package CodeRank.app.src.main.impl.pagerank;
 
 import CodeRank.app.src.main.impl.graph.Node;
 
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class PageGraph<T> {
@@ -43,7 +45,6 @@ public class PageGraph<T> {
         }
 
         pageSetSize = nodes.size();
-        System.out.println("constructing " + pageSetSize);
     }
 
     public void launchPageRank(int iterations) {
@@ -68,17 +69,23 @@ public class PageGraph<T> {
     }
 
     public void getPageRank() {
-        nodes.stream()
-                .sorted(Comparator.comparingDouble((PageNode x) -> x.pagerank).reversed())
-                .forEach(x -> {
-                    try {
-                        System.out.println(revStorage.get(x).getName());
-                        System.out.println(x.pagerank);
-                        System.out.print("\n");
-                    } catch (IllegalArgumentException e) {
-                        e.printStackTrace();
-                    }
-                });
+        Exception e = new Exception();
+        try (Writer fileWriter = new BufferedWriter(new OutputStreamWriter(
+                new FileOutputStream("result.txt"), StandardCharsets.UTF_8))) {
+            nodes.stream()
+                    .sorted(Comparator.comparingDouble((PageNode x) -> x.pagerank).reversed())
+                    .forEach(x -> {
+                        try {
+                            fileWriter.write(revStorage.get(x).getName() + " ");
+                            fileWriter.write(String.valueOf(x.pagerank) + " ");
+                            fileWriter.write("\n");
+                        } catch (IllegalArgumentException | IOException ex) {
+                            e.addSuppressed(ex);
+                        }
+                    });
+        } catch (IOException ex) {
+            e.addSuppressed(ex);
+            e.printStackTrace();
+        }
     }
-
 }
