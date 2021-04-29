@@ -13,7 +13,8 @@ public class PageRankLauncher<T> {
                        HashMap<Node<T>, List<Node<T>>> parents) {
         PageGraph<MethodNode> pageGraph = new PageGraph(initStorage, edges, parents);
         pageGraph.launchPageRank(50);
-        pageGraph.getPageRank();
+//        pageGraph.getPageRank();
+        pageGraph.getDistinctPageRank();
     }
 
 }

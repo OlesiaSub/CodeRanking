@@ -5,6 +5,7 @@ import CodeRank.app.src.main.impl.graph.Node;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class PageGraph<T> {
     private static int index = 0;
@@ -77,12 +78,40 @@ public class PageGraph<T> {
                     .forEach(x -> {
                         try {
                             fileWriter.write(revStorage.get(x).getName() + " ");
-                            fileWriter.write(String.valueOf(x.pagerank) + " ");
+                            fileWriter.write(x.pagerank + " ");
                             fileWriter.write("\n");
                         } catch (IllegalArgumentException | IOException ex) {
                             e.addSuppressed(ex);
                         }
                     });
+        } catch (IOException ex) {
+            e.addSuppressed(ex);
+            e.printStackTrace();
+        }
+    }
+
+    public void getDistinctPageRank() {
+        Map<Double, List<PageNode>> distinctPageNodes = nodes.stream()
+                .sorted(Comparator.comparingDouble((PageNode x) -> x.pagerank).reversed())
+                .collect(Collectors.groupingBy(x -> x.pagerank));
+
+        List<Double> values = nodes.stream()
+                .sorted(Comparator.comparingDouble((PageNode x) -> x.pagerank).reversed())
+                .map(x -> x.pagerank)
+                .distinct()
+                .collect(Collectors.toList());
+
+        Exception e = new Exception();
+        try (Writer fileWriter = new BufferedWriter(new OutputStreamWriter(
+                new FileOutputStream("result.txt"), StandardCharsets.UTF_8))) {
+            for (Double rank : values) {
+                fileWriter.write("Rank: " + rank + '\n');
+                for (PageNode node : distinctPageNodes.get(rank)) {
+                    fileWriter.write(revStorage.get(node).getName());
+                    fileWriter.write("\n");
+                }
+                fileWriter.write('\n');
+            }
         } catch (IOException ex) {
             e.addSuppressed(ex);
             e.printStackTrace();
