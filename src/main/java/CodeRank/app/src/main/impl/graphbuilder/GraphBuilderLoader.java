@@ -4,10 +4,7 @@ import CodeRank.app.src.main.impl.graph.Node;
 import CodeRank.app.src.main.impl.pagerank.PageRankLauncher;
 
 import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.HashMap;

@@ -3,7 +3,7 @@ package org.coderank
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
-import CodeRank.app.src.main.impl.asm.Configuration;
+import CodeRank.app.src.main.impl.asm.Configuration
 import CodeRank.app.src.main.impl.main.Main
 
 class CodeRankPlugin : Plugin<Project> {
