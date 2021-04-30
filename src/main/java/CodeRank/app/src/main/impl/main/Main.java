@@ -1,22 +1,21 @@
 package CodeRank.app.src.main.impl.main;
 
+import CodeRank.app.src.main.impl.asm.ClassDescriptor;
+import CodeRank.app.src.main.impl.asm.Configuration;
+import CodeRank.app.src.main.impl.graph.Graph;
+import CodeRank.app.src.main.impl.graph.MethodNode;
+import CodeRank.app.src.main.impl.graphbuilder.GraphBuilderException;
+import CodeRank.app.src.main.impl.graphbuilder.GraphBuilderLoader;
+
+import org.objectweb.asm.ClassReader;
+
 import java.io.BufferedInputStream;
-import java.io.InputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-
-import CodeRank.app.src.main.impl.asm.Configuration;
-import CodeRank.app.src.main.impl.graph.Node;
-import CodeRank.app.src.main.impl.graphbuilder.GraphBuilderException;
-import CodeRank.app.src.main.impl.graphbuilder.GraphBuilderLoader;
-import CodeRank.app.src.main.impl.pagerank.PageGraph;
-import org.objectweb.asm.ClassReader;
-import CodeRank.app.src.main.impl.asm.ClassDescriptor;
-import CodeRank.app.src.main.impl.graph.Graph;
-import CodeRank.app.src.main.impl.graph.MethodNode;
 
 /*
 
@@ -25,6 +24,8 @@ temporary arguments:
 "/home/olesya/HSE_2020-1/java/maze/out/artifacts/maze_jar/maze.jar"
 "/home/olesya/Downloads/junit-4.13.2.jar"
 "/home/olesya/HSE_2020-1/JARsmth/scala-library-2.12.13.jar"
+
+"/home/olesya/HSE_2020-1/java/maze/out/artifacts/maze_jar/maze.jar" "/home/olesya/HSE_2020-1/CodeRank/src/main/java/CodeRank/app/src/main/impl/javaLoader.jar" "CodeRank.app.src.main.impl.graph.Graph"
 
  */
 
@@ -36,17 +37,15 @@ public class Main {
     public static void main(String[] args) throws IOException, GraphBuilderException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         long time = System.currentTimeMillis();
         String jarPath = args[0];
-        System.out.println(jarPath);
         JarFile jarFile = new JarFile(jarPath);
         Enumeration<JarEntry> entries = jarFile.entries();
 
         // to launch without plugin installation
-        // Configuration.setConfigProperty("/home/olesya/HSE_2020-1/CodeRank/src/main/java/CodeRank/app/src/main/resources/analysis.properties");
+//        Configuration.setConfigProperty("/home/olesya/HSE_2020-1/CodeRank/src/main/java/CodeRank/app/src/main/resources/analysis.properties");
 
         new Configuration();
         loader = new GraphBuilderLoader<>(args[1], args[2]);
         loader.createInstance();
-
         while (entries.hasMoreElements()) {
             JarEntry entry = entries.nextElement();
             String name = entry.getName();
@@ -84,7 +83,7 @@ public class Main {
         loader.applyParameters();
 
         // TIME MEASUREMENT
-        
+
         long usedBytes = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
         System.out.print("FINAL TIME: ");
         System.out.println(System.currentTimeMillis() - time);

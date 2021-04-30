@@ -5,3 +5,13 @@ build/
 .idea/
 *.iml
 out/
+src/main/java/CodeRank/gradle*
+*.class
+*.jar
+gradle*
+src/main/java/CodeRank/app/build*
+src/main/java/CodeRank/settings.gradle
+.gitattributes
+filename.txt
+result.txt
+src/main/java/CodeRank/build.gradle

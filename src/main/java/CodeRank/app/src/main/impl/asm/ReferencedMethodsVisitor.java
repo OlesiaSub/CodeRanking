@@ -18,7 +18,6 @@ public class ReferencedMethodsVisitor extends MethodVisitor {
     void getReferenceInfo(String owner, String name, String desc) {
         if (Configuration.processPackage(owner)) {
             String actualName = (Type.getObjectType(owner).getClassName() + "." + name).replace('/', '.');
-//            System.out.println("REF: " + actualName + " " + desc);
             Node<MethodNode> child = MethodNode.createNode();
             child.payload = new MethodNode(actualName, desc);
             parent.getChildren().add(child);
@@ -28,11 +27,6 @@ public class ReferencedMethodsVisitor extends MethodVisitor {
     @Override
     public void visitMethodInsn(int opcode, String owner, String name, String desc, boolean itf) {
         getReferenceInfo(owner, name, desc);
-    }
-
-    @Override
-    public void visitEnd() {
-
     }
 
 }
