@@ -12,9 +12,10 @@ public class PageRankLauncher<T> {
     public void launch(HashSet<Node<T>> initStorage, HashMap<Node<T>, List<Node<T>>> edges,
                        HashMap<Node<T>, List<Node<T>>> parents) {
         PageGraph<MethodNode> pageGraph = new PageGraph(initStorage, edges, parents);
-        pageGraph.launchPageRank(50);
+        pageGraph.launchPageRank(30);
 //        pageGraph.getPageRank();
         pageGraph.getDistinctPageRank();
+        pageGraph.rankClasses();
     }
 
 }

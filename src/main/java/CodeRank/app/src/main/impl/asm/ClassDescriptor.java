@@ -1,13 +1,15 @@
 package CodeRank.app.src.main.impl.asm;
 
-import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
-
-import CodeRank.app.src.main.impl.graphbuilder.GraphBuilderException;
-import CodeRank.app.src.main.impl.main.Main;
-import org.objectweb.asm.*;
 import CodeRank.app.src.main.impl.graph.MethodNode;
 import CodeRank.app.src.main.impl.graph.Node;
+import CodeRank.app.src.main.impl.graphbuilder.GraphBuilderException;
+import CodeRank.app.src.main.impl.main.Main;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.FieldVisitor;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+
+import java.io.InputStream;
 
 public class ClassDescriptor extends ClassVisitor {
 

@@ -10,12 +10,9 @@ import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 
 public class GraphBuilderLoader<T> {
     private final String graphBuilderLocation;
@@ -28,7 +25,7 @@ public class GraphBuilderLoader<T> {
         this.graphBuilderName = graphBuilderName;
     }
 
-    public void createInstanceFromDirectory() throws GraphBuilderException {
+    public void createInstance() throws GraphBuilderException {
         try {
             File inputDirectory = new File(graphBuilderLocation);
             ClassLoader classLoader = new URLClassLoader(
@@ -42,19 +39,11 @@ public class GraphBuilderLoader<T> {
         }
     }
 
-    public void createInstanceFromJar() throws IOException, ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-        URL[] urls = {new URL("jar:file:" + graphBuilderLocation + "!/")};
-        URLClassLoader classLoader = URLClassLoader.newInstance(urls);
-        customGraphBuilder = classLoader.loadClass(graphBuilderName);
-        instance = customGraphBuilder.getDeclaredConstructor().newInstance();
-    }
-
     public void loadGraphBuilder() throws GraphBuilderException {
         try {
             Method constructGraph = customGraphBuilder.getMethod("constructGraph");
             constructGraph.invoke(instance);
         } catch (Exception e) {
-            // TODO: fix exceptions
             throw new GraphBuilderException("Unable to load graph builder.");
         }
     }

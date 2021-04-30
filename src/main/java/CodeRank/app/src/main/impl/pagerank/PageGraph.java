@@ -69,37 +69,18 @@ public class PageGraph<T> {
         currentNode.pagerank = randomFactor + (1 - dampingFactor) * sum;
     }
 
-    public void getPageRank() {
-        Exception e = new Exception();
-        try (Writer fileWriter = new BufferedWriter(new OutputStreamWriter(
-                new FileOutputStream("result.txt"), StandardCharsets.UTF_8))) {
-            nodes.stream()
-                    .sorted(Comparator.comparingDouble((PageNode x) -> x.pagerank).reversed())
-                    .forEach(x -> {
-                        try {
-                            fileWriter.write(revStorage.get(x).getName() + " ");
-                            fileWriter.write(x.pagerank + " ");
-                            fileWriter.write("\n");
-                        } catch (IllegalArgumentException | IOException ex) {
-                            e.addSuppressed(ex);
-                        }
-                    });
-        } catch (IOException ex) {
-            e.addSuppressed(ex);
-            e.printStackTrace();
-        }
-    }
-
     public void getDistinctPageRank() {
-        Map<Double, List<PageNode>> distinctPageNodes = nodes.stream()
-                .sorted(Comparator.comparingDouble((PageNode x) -> x.pagerank).reversed())
-                .collect(Collectors.groupingBy(x -> x.pagerank));
+        Map<Double, List<PageNode>> distinctPageNodes =
+                nodes.stream()
+                        .sorted(Comparator.comparingDouble((PageNode x) -> x.pagerank).reversed())
+                        .collect(Collectors.groupingBy(x -> x.pagerank));
 
-        List<Double> values = nodes.stream()
-                .sorted(Comparator.comparingDouble((PageNode x) -> x.pagerank).reversed())
-                .map(x -> x.pagerank)
-                .distinct()
-                .collect(Collectors.toList());
+        List<Double> values =
+                nodes.stream()
+                        .sorted(Comparator.comparingDouble((PageNode x) -> x.pagerank).reversed())
+                        .map(x -> x.pagerank)
+                        .distinct()
+                        .collect(Collectors.toList());
 
         Exception e = new Exception();
         try (Writer fileWriter = new BufferedWriter(new OutputStreamWriter(
@@ -111,6 +92,48 @@ public class PageGraph<T> {
                     fileWriter.write("\n");
                 }
                 fileWriter.write('\n');
+            }
+        } catch (IOException ex) {
+            e.addSuppressed(ex);
+            e.printStackTrace();
+        }
+    }
+
+    public void rankClasses() {
+        Map<Object, List<PageNode>> classNameMap =
+                nodes.stream()
+                        .collect(Collectors.groupingBy(x -> {
+                            String name = revStorage.get(x).getName();
+                            int idx;
+                            for (idx = name.length() - 1; idx >= 0; idx--) {
+                                if (name.charAt(idx) == '.') {
+                                    break;
+                                }
+                            }
+                            return name.subSequence(0, idx);
+                        }));
+
+        Map<String, Double> classRanks = new HashMap<>();
+        for (Object name : classNameMap.keySet()) {
+            double value = 0.0;
+            for (PageNode node : classNameMap.get(name)) {
+                value += node.pagerank;
+            }
+            classRanks.put((String) name, value);
+        }
+
+        List<String> sortedClassNames = new ArrayList<>(classRanks.keySet());
+        sortedClassNames = sortedClassNames
+                .stream()
+                .sorted(Comparator.comparingDouble(classRanks::get).reversed())
+                .collect(Collectors.toList());
+
+        Exception e = new Exception();
+        try (Writer fileWriter = new BufferedWriter(new OutputStreamWriter(
+                new FileOutputStream("result.txt"), StandardCharsets.UTF_8))) {
+            for (String className : sortedClassNames) {
+                fileWriter.write("Class rank: " + classRanks.get(className) + '\n');
+                fileWriter.write(className + "\n\n");
             }
         } catch (IOException ex) {
             e.addSuppressed(ex);

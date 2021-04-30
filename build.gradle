@@ -60,7 +60,7 @@ coderank {
 //    inputJarFileName = '/home/olesya/Downloads/junit-4.13.2.jar'
     inputJarFileName = '/home/olesya/HSE_2020-1/java/maze/out/artifacts/maze_jar/maze.jar'
     propertiesFileName = '/home/olesya/HSE_2020-1/CodeRank/src/main/java/CodeRank/app/src/main/resources/analysis.properties'
-//    graphBuilderLocation = '/home/olesya/HSE_2020-1/CodeRank/src/main/java/CodeRank/app/src/main/impl/'
-    graphBuilderLocation = './build/classes/java/main/'
+    graphBuilderLocation = '/home/olesya/HSE_2020-1/CodeRank/src/main/java/CodeRank/app/src/main/impl/javaLoader.jar'
+//    graphBuilderLocation = './build/classes/java/main/'
     graphBuilderName = 'CodeRank.app.src.main.impl.graph.Graph'
 }
