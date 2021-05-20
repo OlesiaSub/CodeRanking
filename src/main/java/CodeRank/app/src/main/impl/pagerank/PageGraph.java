@@ -128,11 +128,19 @@ public class PageGraph<T> {
                 .sorted(Comparator.comparingDouble(classRanks::get).reversed())
                 .collect(Collectors.toList());
 
+
         Exception e = new Exception();
         try (Writer fileWriter = new BufferedWriter(new OutputStreamWriter(
                 new FileOutputStream("result.txt"), StandardCharsets.UTF_8))) {
+            double currentRank = classRanks.get(sortedClassNames.get(0)) != null ? classRanks.get(sortedClassNames.get(0)) : 0;
+            double diff = 0.001;
+            boolean flag = true;
             for (String className : sortedClassNames) {
-                fileWriter.write("Class rank: " + classRanks.get(className) + '\n');
+                if (classRanks.get(className) < currentRank - diff || flag) {
+                    fileWriter.write("Class rank: " + classRanks.get(className) + '\n');
+                    currentRank = classRanks.get(className);
+                    flag = false;
+                }
                 fileWriter.write(className + "\n\n");
             }
         } catch (IOException ex) {
