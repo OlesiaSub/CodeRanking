@@ -15,10 +15,6 @@ plugins {
     id 'maven'
 }
 
-ext {
-    javaassist_version = "3.12.1.GA"
-}
-
 group 'org.coderank'
 version '0.0.1'
 sourceCompatibility = 1.8
@@ -33,11 +29,11 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     // This dependency is used by the application.
     implementation 'com.google.guava:guava:29.0-jre'
+    implementation "org.javassist:javassist:3.28.0-GA"
     compile group: 'org.ow2.asm', name: 'asm', version: '9.1'
     compile group: 'org.ow2.asm', name: 'asm-tree', version: '9.1'
     compile group: 'org.ow2.asm', name: 'asm-util', version: '9.1'
     compile group: 'org.ow2.asm', name: 'asm-commons', version: '9.1'
-    compile "javassist:javassist:$javaassist_version"
 }
 
 compileKotlin {
