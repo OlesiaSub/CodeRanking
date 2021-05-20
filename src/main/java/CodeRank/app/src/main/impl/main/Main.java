@@ -7,6 +7,11 @@ import CodeRank.app.src.main.impl.graph.MethodNode;
 import CodeRank.app.src.main.impl.graphbuilder.GraphBuilderException;
 import CodeRank.app.src.main.impl.graphbuilder.GraphBuilderLoader;
 
+import CodeRank.app.src.main.impl.pagerank.PageGraph;
+import CodeRank.app.src.main.impl.dynamic.InformationCollector;
+import javassist.CannotCompileException;
+import javassist.NotFoundException;
+import javassist.bytecode.BadBytecode;
 import org.objectweb.asm.ClassReader;
 
 import java.io.BufferedInputStream;
@@ -34,12 +39,25 @@ public class Main {
     public static Graph<MethodNode> graph = new Graph<>();
     public static GraphBuilderLoader<MethodNode> loader;
 
-    public static void main(String[] args) throws IOException, GraphBuilderException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+    public static void main(String[] args) throws IOException, GraphBuilderException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException, NotFoundException, BadBytecode, CannotCompileException {
+
+        // debug
+
+        // works
+        InformationCollector.doSmth("CodeRank.app.src.main.impl.graph.MethodNode",
+                "getName", PageGraph.class);
+
+        // fails
+        InformationCollector.doSmth("CodeRank.app.src.main.impl.pagerank.PageGraph",
+                "rankClasses", PageGraph.class);
+
+        // это просто чтобы дальше программу не выполнять
+        if (true) return;
+
         long time = System.currentTimeMillis();
         String jarPath = args[0];
         JarFile jarFile = new JarFile(jarPath);
         Enumeration<JarEntry> entries = jarFile.entries();
-
         // to launch without plugin installation
         Configuration.setConfigProperty("/home/olesya/HSE_2020-1/CodeRank/src/main/java/CodeRank/app/src/main/resources/analysis.properties");
 
@@ -57,6 +75,7 @@ public class Main {
                 }
             }
         }
+
 
 
         /*
