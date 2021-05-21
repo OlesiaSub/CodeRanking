@@ -3,7 +3,7 @@ package CodeRank.app.src.main.impl.asm;
 import CodeRank.app.src.main.impl.graph.MethodNode;
 import CodeRank.app.src.main.impl.graph.Node;
 import CodeRank.app.src.main.impl.graphbuilder.GraphBuilderException;
-import CodeRank.app.src.main.impl.main.Main;
+import CodeRank.app.src.main.impl.staticanalysys.StaticLauncher;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.MethodVisitor;
@@ -41,7 +41,7 @@ public class ClassDescriptor extends ClassVisitor {
         parent.payload = new MethodNode(actualName, desc);
         ReferencedMethodsVisitor ref = new ReferencedMethodsVisitor(parent);
         try {
-            Main.loader.applyGetStorage().add(parent);
+            StaticLauncher.loader.applyGetStorage().add(parent);
         } catch (GraphBuilderException e) {
             e.printStackTrace();
         }

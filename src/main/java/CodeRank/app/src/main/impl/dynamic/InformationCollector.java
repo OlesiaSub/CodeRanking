@@ -30,10 +30,14 @@ public class InformationCollector {
         System.out.println(operations);
     }
 
-    public void collectInformation(String className, String methodName, Class<?> classDesc) throws BadBytecode, NotFoundException {
+    public void collectInformation(String className, String methodName, Class<?> classDesc) throws BadBytecode, NotFoundException, CannotCompileException, IOException {
         ClassPool currentClassPool = ClassPool.getDefault();
         currentClassPool.appendClassPath(new ClassClassPath(classDesc));
         ClassFile currentClassFile = currentClassPool.get(className).getClassFile();
+        CtClass cc = currentClassPool.get(className);
+        CtMethod m = cc.getDeclaredMethod(methodName);
+        m.insertBefore("{ System.out.println($1); }");
+        cc.writeFile();
 
         System.out.println("FIELDS: \n");
         for (Object fieldInfoObj : currentClassFile.getFields()) {
@@ -54,9 +58,8 @@ public class InformationCollector {
                 parameters += currentClassFile.getConstPool().getInterfaceMethodrefName(index);
                 String currentInterfaceName = currentClassFile.getConstPool().getInterfaceMethodrefClassName(index);
                 System.out.println("Line: " + currentMethodInfo.getLineNumber(address) + "; Address: " + address);
-                System.out.println(Mnemonic.OPCODE[opcode] + ' ' + currentInterfaceName + '.' + parameters);
+                System.out.println(Mnemonic.OPCODE[opcode] + ' ' + currentInterfaceName + '.' + parameters + '\n');
             }
-
         }
     }
 
