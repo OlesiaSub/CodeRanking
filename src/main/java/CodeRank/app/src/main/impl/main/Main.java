@@ -4,20 +4,13 @@ import CodeRank.app.src.main.impl.asm.ClassDescriptor;
 import CodeRank.app.src.main.impl.asm.Configuration;
 import CodeRank.app.src.main.impl.graph.Graph;
 import CodeRank.app.src.main.impl.graph.MethodNode;
-import CodeRank.app.src.main.impl.graphbuilder.GraphBuilderException;
 import CodeRank.app.src.main.impl.graphbuilder.GraphBuilderLoader;
 
-import CodeRank.app.src.main.impl.pagerank.PageGraph;
 import CodeRank.app.src.main.impl.dynamic.InformationCollector;
-import javassist.CannotCompileException;
-import javassist.NotFoundException;
-import javassist.bytecode.BadBytecode;
 import org.objectweb.asm.ClassReader;
 
 import java.io.BufferedInputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -39,17 +32,16 @@ public class Main {
     public static Graph<MethodNode> graph = new Graph<>();
     public static GraphBuilderLoader<MethodNode> loader;
 
-    public static void main(String[] args) throws IOException, GraphBuilderException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException, NotFoundException, BadBytecode, CannotCompileException {
+    public static void main(String[] args) throws Exception {
 
         // debug
 
-        // works
-        InformationCollector.doSmth("CodeRank.app.src.main.impl.graph.MethodNode",
-                "getName", PageGraph.class);
+//        InformationCollector.doSmth("CodeRank.app.src.main.impl.pagerank.PageGraph",
+//                "updatePageRank", PageGraph.class);
 
-        // fails
-        InformationCollector.doSmth("CodeRank.app.src.main.impl.pagerank.PageGraph",
-                "rankClasses", PageGraph.class);
+        InformationCollector infoCol = new InformationCollector();
+        infoCol.collectInformation("CodeRank.app.src.main.impl.graph.Graph",
+                "traverseChildren", Graph.class);
 
         // это просто чтобы дальше программу не выполнять
         if (true) return;
