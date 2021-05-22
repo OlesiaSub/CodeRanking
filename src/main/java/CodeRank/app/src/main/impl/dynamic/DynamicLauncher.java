@@ -14,9 +14,13 @@ import javassist.NotFoundException;
 import org.objectweb.asm.ClassReader;
 
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -26,7 +30,8 @@ public class DynamicLauncher {
     public static Graph<MethodNode> graph = new Graph<>();
     public static GraphBuilderLoader<MethodNode> loader;
 
-    public static void launchDynamic(String[] args) throws DynamicAnalysisException, Exception {
+    public static void launchDynamic(String[] args) throws DynamicAnalysisException, IOException, GraphBuilderException,
+            CannotCompileException, ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
 
         long time = System.currentTimeMillis();
         String jarPath = args[0];
@@ -45,25 +50,31 @@ public class DynamicLauncher {
             if (name.endsWith(".class") && Configuration.processPackage(name)) {
                 String className = (name.substring(0, name.length() - 6)).replace('/', '.');
                 System.out.println(className);
-                CtClass res = InformationCollector.processMethod(className);
-//                debug
+                CtClass processedClass = InformationCollector.processMethod(className);
+
+//                это для запуска на файлах прямо из проекта, дебаг
 //                CtClass res = InformationCollector.processMethod("CodeRank.app.src.main.impl.pagerank.PageGraph");
-                if (res != null) res.toClass();
-                else {
+
+                if (processedClass != null) {
+                    processedClass.toClass();
+                } else {
+                    // ?
                     continue;
                 }
+                if (name.contains("MazeSolver")) {
 
-                try {
-                    Class<?> classDesc = PageGraph.class;
-                    Method meth = classDesc.getDeclaredConstructor().newInstance().getClass().getDeclaredMethod("updatePageRank", PageNode.class);
-                    meth.setAccessible(true);
-                    PageNode node = new PageNode(1);
-                    meth.invoke(classDesc.getDeclaredConstructor().newInstance(), node);
-                } catch (Exception ex) {
-                    throw new DynamicAnalysisException("беда");
+                    File file = new File("/home/olesya/HSE_2020-1/java/maze/out/production/maze/");
+                    URL url = file.toURI().toURL();
+                    URL[] urls = new URL[]{url};
+                    ClassLoader currentLoader = new URLClassLoader(urls);
+                    Class<?> loadedClass = currentLoader.loadClass(className);
+                    Method meth = loadedClass.getDeclaredConstructor()
+                            .newInstance()
+                            .getClass().getDeclaredMethod("initializeFields", int.class, int.class);
+//                    meth.setAccessible(true);
+                    meth.invoke(loadedClass.getDeclaredConstructor().newInstance(), 5, 10);
                 }
             }
-
         }
 
         /*
@@ -85,9 +96,6 @@ public class DynamicLauncher {
         }
 
         */
-
-        loader.loadGraphBuilder();
-        loader.applyParameters();
 
         // TIME MEASUREMENT
         long usedBytes = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();

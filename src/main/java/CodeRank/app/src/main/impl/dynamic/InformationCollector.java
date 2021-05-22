@@ -23,21 +23,20 @@ public class InformationCollector {
             File file = new File("/home/olesya/HSE_2020-1/java/maze/out/production/maze/");
             URL url = file.toURI().toURL();
             URL[] urls = new URL[]{url};
-            ClassLoader cl = new URLClassLoader(urls);
-            Class<?> cls = cl.loadClass(className);
-            currentClassPool.insertClassPath(new ClassClassPath(cls));
-//            currentClassPool.appendClassPath(new ClassClassPath(cls));
-            CtClass ctc = currentClassPool.getOrNull(className);
-            if (ctc == null) {
+            ClassLoader currentLoader = new URLClassLoader(urls);
+            Class<?> loadedClass = currentLoader.loadClass(className);
+            currentClassPool.insertClassPath(new ClassClassPath(loadedClass));
+//            currentClassPool.appendClassPath(new ClassClassPath(loadedClass));
+            CtClass currentCtClass = currentClassPool.getOrNull(className);
+            if (currentCtClass == null) {
                 return null;
             }
-            ClassFile currentClassFile = ctc.getClassFile();
-            CtClass currentCtClass = currentClassPool.get(className);
+            ClassFile currentClassFile = currentCtClass.getClassFile();
             Stream.of(currentCtClass.getDeclaredMethods())
                     .filter(method -> !(Modifier.isAbstract(method.getModifiers())))
                     .forEach(method -> {
-                        Consumer<CtMethod> consumer = new MethodConsumer();
-                        consumer.accept(method);
+                        int[] nums = {0, 3, 4};
+                        modifyMethod(method, nums);
                     });
             currentCtClass.writeFile();
             currentCtClass.detach();
@@ -53,16 +52,19 @@ public class InformationCollector {
         }
     }
 
-    private static final class MethodConsumer implements Consumer<CtMethod> {
-        @Override
-        public void accept(CtMethod method) {
-            try {
+    private static void modifyMethod(CtMethod method, int[] lineNumbers) {
+        try {
+            for (int currentLineNumber : lineNumbers) {
+                method.insertAt(currentLineNumber, "{ " +
+//                        "CodeRank.app.src.main.impl.dynamic.ByteCodeInsertion.printt(); " +
+                        "System.out.println(\" LINE!\"); }");
                 method.insertBefore("{ System.out.println(\" hello!\"); }");
                 method.insertAfter("{ System.out.println(\" bye!\"); }");
-            } catch (CannotCompileException e) {
-                throw new RuntimeException("An error occurred while decorating method " + method.getName(), e);
             }
+        } catch (CannotCompileException e) {
+            throw new RuntimeException("An error occurred while decorating method " + method.getName(), e);
         }
+
     }
 
     private static void collectMethodsInformation(ClassFile currentClassFile) throws BadBytecode {
@@ -84,8 +86,9 @@ public class InformationCollector {
                     if (!Configuration.processPackage(currentInterfaceName)) {
                         continue;
                     }
-                    System.out.println("Line: " + currentMethodInfo.getLineNumber(address) + "; Address: " + address);
-                    System.out.println(Mnemonic.OPCODE[opcode] + ' ' + currentInterfaceName + '.' + parameters + '\n');
+                    System.out.println("Line: " + currentMethodInfo.getLineNumber(address));
+                    System.out.println(currentClassFile.getName());
+                    System.out.println(Mnemonic.OPCODE[opcode] + ' ' + currentInterfaceName + '.' + parameters);
                 }
             }
         }
