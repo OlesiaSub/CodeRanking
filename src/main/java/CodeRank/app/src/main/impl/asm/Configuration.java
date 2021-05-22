@@ -6,13 +6,12 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public class Configuration {
-    private Properties properties;
     private static String propertiesFileName;
     private static String[] packages = new String[0];
 
     public Configuration() throws IOException {
         InputStream input = new FileInputStream(propertiesFileName);
-        properties = new Properties();
+        Properties properties = new Properties();
         properties.load(input);
 
         String packagesList = properties.getProperty("process-packages");
@@ -22,7 +21,7 @@ public class Configuration {
 
     public static boolean processPackage(String name) {
         for (String token : packages) {
-            if (name.startsWith(token)) {
+            if (name.startsWith(token) || name.startsWith(token.replace('/', '.'))) {
                 return true;
             }
         }

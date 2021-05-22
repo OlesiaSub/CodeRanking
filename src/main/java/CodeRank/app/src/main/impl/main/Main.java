@@ -18,8 +18,8 @@ temporary arguments:
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        DynamicLauncher.launch(args);
-//        StaticLauncher.launch(args);
+        DynamicLauncher.launchDynamic(args);
+//        StaticLauncher.launchStatic(args);
     }
 }
 

@@ -68,7 +68,7 @@ public class PageGraph<T> {
 
     private void updatePageRank(PageNode currentNode) {
         // to debug
-        System.out.println("MIDDLE");
+//        System.out.println("MIDDLE");
         double sum = 0;
         for (PageNode node : currentNode.parents) {
             sum += node.pagerank / node.neighbours.size();

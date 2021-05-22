@@ -10,27 +10,16 @@ import org.objectweb.asm.ClassReader;
 import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.util.Enumeration;
+import java.util.jar.Attributes;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-
-/*
-
-temporary arguments:
-
-"/home/olesya/HSE_2020-1/java/maze/out/artifacts/maze_jar/maze.jar"
-"/home/olesya/Downloads/junit-4.13.2.jar"
-"/home/olesya/HSE_2020-1/JARsmth/scala-library-2.12.13.jar"
-
-"/home/olesya/HSE_2020-1/java/maze/out/artifacts/maze_jar/maze.jar" "/home/olesya/HSE_2020-1/CodeRank/src/main/java/CodeRank/app/src/main/impl/javaLoader.jar" "CodeRank.app.src.main.impl.graph.Graph"
-
- */
 
 public class StaticLauncher {
 
     public static Graph<MethodNode> graph = new Graph<>();
     public static GraphBuilderLoader<MethodNode> loader;
 
-    public static void launch(String[] args) throws Exception {
+    public static void launchStatic(String[] args) throws Exception {
 
         long time = System.currentTimeMillis();
         String jarPath = args[0];
@@ -46,6 +35,7 @@ public class StaticLauncher {
         while (entries.hasMoreElements()) {
             JarEntry entry = entries.nextElement();
             String name = entry.getName();
+            Attributes fuck = entry.getAttributes();
             if (name.endsWith(".class") && Configuration.processPackage(name)) {
                 try (InputStream stream = new BufferedInputStream(jarFile.getInputStream(entry), 1024)) {
                     ClassReader re = new ClassReader(stream);
@@ -54,8 +44,6 @@ public class StaticLauncher {
                 }
             }
         }
-
-
 
         /*
 
@@ -81,7 +69,6 @@ public class StaticLauncher {
         loader.applyParameters();
 
         // TIME MEASUREMENT
-
         long usedBytes = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
         System.out.print("FINAL TIME: ");
         System.out.println(System.currentTimeMillis() - time);
