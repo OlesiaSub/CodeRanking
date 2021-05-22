@@ -14,6 +14,12 @@ public class PageGraph<T> {
     private final HashMap<PageNode, Node<T>> revStorage = new HashMap<>();
     public HashSet<PageNode> nodes = new HashSet<>();
 
+    public PageGraph() {
+        // to debug
+        this.nodes = null;
+        pageSetSize = 0;
+    }
+
     public PageGraph(HashSet<PageNode> nodes) {
         this.nodes = nodes;
         pageSetSize = nodes.size();
@@ -61,6 +67,8 @@ public class PageGraph<T> {
     }
 
     private void updatePageRank(PageNode currentNode) {
+        // to debug
+        System.out.println("MIDDLE");
         double sum = 0;
         for (PageNode node : currentNode.parents) {
             sum += node.pagerank / node.neighbours.size();
