@@ -1,31 +1,53 @@
 package CodeRank.app.src.main.impl.dynamic;
 
+import java.io.ObjectStreamClass;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class BytecodeInsertion {
 
-    private static class Pair {
-        public Object fst;
-        public Object snd;
+    private static class InvocationData {
+        public String source;
+        public String target;
+        public String invocationType;
 
-        public Pair(Object fstt, Object sndd) {
-            fst = fstt;
-            snd = sndd;
+        public InvocationData(String source, String target, String invocationType) {
+            this.source = source;
+            this.target = target;
+            this.invocationType = invocationType;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (!(o instanceof InvocationData)) {
+                return false;
+            }
+            InvocationData data2 = (InvocationData) o;
+            return this.invocationType.equals(data2.invocationType) &&
+                    this.target.equals(data2.target) && this.source.equals(data2.source);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(source, target, invocationType);
         }
     }
 
-    public HashMap<Pair, Integer> storage = new HashMap<>();
+    public BytecodeInsertion() {
 
-    public void toInsert(Object source, Object target, int methodId) {
-        Pair pair = new Pair(source, target);
-        if (!storage.containsKey(new Pair(source, target))) {
-            storage.put(pair, 0);
+    }
+
+    public static HashMap<InvocationData, Integer> storage = new HashMap<>();
+
+    public static void toInsert(String source, String target, String invocationType) {
+//        System.out.println("ENTRY INSERTION");
+        InvocationData invocationData = new InvocationData(source, target, invocationType);
+        if (!storage.containsKey(invocationData)) {
+            storage.put(invocationData, 0);
         } else {
-            storage.put(pair, storage.get(pair) + 1);
+            storage.put(invocationData, storage.get(invocationData) + 1);
         }
-    }
-
-    public void printt() {
-        System.out.println("came here yeeeeeeeeeees");
+//        System.out.println(storage.get(invocationData));
+//        System.out.println("EXIT INSERTION");
     }
 }

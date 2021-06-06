@@ -27,7 +27,7 @@ public class StaticLauncher {
         Enumeration<JarEntry> entries = jarFile.entries();
 
         // костыль to launch without plugin installation
-        Configuration.setConfigProperty("/home/olesya/HSE_2020-1/CodeRank/src/main/java/CodeRank/app/src/main/resources/analysis.properties");
+        Configuration.setConfigProperty("/home/olesya/HSE_2020-1/newestCodeRank/CodeRanking/src/main/java/CodeRank/app/src/main/resources/analysis.properties");
 
         new Configuration();
         loader = new GraphBuilderLoader<>(args[1], args[2]);

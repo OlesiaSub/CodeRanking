@@ -31,18 +31,11 @@ public class InformationCollector {
             if (currentCtClass == null) {
                 return null;
             }
-            ClassFile currentClassFile = currentCtClass.getClassFile();
-            Stream.of(currentCtClass.getDeclaredMethods())
-                    .filter(method -> !(Modifier.isAbstract(method.getModifiers())))
-                    .forEach(method -> {
-                        int[] nums = {0, 3, 4};
-                        modifyMethod(method, nums);
-                    });
-            currentCtClass.writeFile();
-            currentCtClass.detach();
-
             try {
-                collectMethodsInformation(currentClassFile);
+                ClassFile currentClassFile = currentCtClass.getClassFile();
+                collectMethodsInformation(currentClassFile, currentCtClass);
+                currentCtClass.writeFile();
+                currentCtClass.detach();
             } catch (BadBytecode ex) {
                 throw new DynamicAnalysisException(ex.getMessage());
             }
@@ -52,14 +45,30 @@ public class InformationCollector {
         }
     }
 
-    private static void modifyMethod(CtMethod method, int[] lineNumbers) {
+    private static void modifyMethod(CtMethod method, int lineNumber, String from, String to, String invocationType) {
         try {
-            for (int currentLineNumber : lineNumbers) {
-                method.insertAt(currentLineNumber, "{ " +
-//                        "CodeRank.app.src.main.impl.dynamic.ByteCodeInsertion.printt(); " +
-                        "System.out.println(\" LINE!\"); }");
-                method.insertBefore("{ System.out.println(\" hello!\"); }");
-                method.insertAfter("{ System.out.println(\" bye!\"); }");
+            String name = method.getLongName();
+            System.out.println("IN METHOD MODIFICATION OF " + name);
+            method.insertBefore("{ System.out.println(\"hello! \"); }");
+            method.insertAfter("{ System.out.println(\" bye!\"); }");
+//            method.insertAt(lineNumber, "{ System.out.println(\"hello middle! \"); }");
+
+            // todo; for all
+            if (name.contains("MazeSolver")) {
+                String insertion = "{" +
+                        "CodeRank.app.src.main.impl.dynamic.BytecodeInsertion.toInsert(" +
+                        "\"" + from + "\"" + "," +
+                        "\"" + to + "\"" + "," +
+                        "\"" + invocationType + "\"" +
+                        ");" +
+                        "}";
+                // debug
+//                method.insertAt(lineNumber, "{ System.out.println(\"OUTPUT \" + " +
+//                        " \" " + lineNumber + " \" " +
+//                        " \" " + from + " \" " +
+//                        " \" " + to + " \" " +
+//                        " \" " + invocationType + " \" " + "); }");
+                method.insertAt(lineNumber, insertion);
             }
         } catch (CannotCompileException e) {
             throw new RuntimeException("An error occurred while decorating method " + method.getName(), e);
@@ -67,9 +76,9 @@ public class InformationCollector {
 
     }
 
-    private static void collectMethodsInformation(ClassFile currentClassFile) throws BadBytecode {
+    private static void collectMethodsInformation(ClassFile currentClassFile, CtClass currentCtClass) throws BadBytecode, NotFoundException {
         for (MethodInfo currentMethodInfo : currentClassFile.getMethods()) {
-            System.out.println("\nMETHOD INSTRUCTIONS OF " + currentClassFile.getName() + '.' + currentMethodInfo.getName() + ":\n");
+            System.out.println("DEBUG; " + "\nMETHOD INSTRUCTIONS OF " + currentClassFile.getName() + '.' + currentMethodInfo.getName() + ":\n");
             if ((currentMethodInfo.getAccessFlags() & AccessFlag.ABSTRACT) != 0) {
                 continue;
             }
@@ -86,9 +95,12 @@ public class InformationCollector {
                     if (!Configuration.processPackage(currentInterfaceName)) {
                         continue;
                     }
-                    System.out.println("Line: " + currentMethodInfo.getLineNumber(address));
-                    System.out.println(currentClassFile.getName());
-                    System.out.println(Mnemonic.OPCODE[opcode] + ' ' + currentInterfaceName + '.' + parameters);
+                    System.out.println("DEBUG; Line: " + currentMethodInfo.getLineNumber(address));
+                    System.out.println("DEBUG; " + currentClassFile.getName());
+                    System.out.println("DEBUG; " + Mnemonic.OPCODE[opcode] + ' ' + currentInterfaceName + '.' + parameters);
+                    CtMethod method = currentCtClass.getDeclaredMethod(currentMethodInfo.getName());
+                    modifyMethod(method, currentMethodInfo.getLineNumber(address),
+                            currentClassFile.getName(), currentInterfaceName, Mnemonic.OPCODE[opcode]);
                 }
             }
         }

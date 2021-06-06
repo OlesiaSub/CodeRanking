@@ -11,7 +11,7 @@ temporary arguments:
 "/home/olesya/Downloads/junit-4.13.2.jar"
 "/home/olesya/HSE_2020-1/JARsmth/scala-library-2.12.13.jar"
 
-"/home/olesya/HSE_2020-1/java/maze/out/artifacts/maze_jar/maze.jar" "/home/olesya/HSE_2020-1/CodeRank/src/main/java/CodeRank/app/src/main/impl/javaLoader.jar" "CodeRank.app.src.main.impl.graph.Graph"
+"/home/olesya/HSE_2020-1/java/maze/out/artifacts/maze_jar/maze.jar" "/home/olesya/HSE_2020-1/newestCodeRank/src/main/java/CodeRank/app/src/main/impl/javaLoader.jar" "CodeRank.app.src.main.impl.graph.Graph"
 
  */
 
