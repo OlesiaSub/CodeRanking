@@ -12,11 +12,13 @@ class CodeRankPlugin : Plugin<Project> {
         project.tasks.create("codeRank") { task ->
             task.doLast {
                 println("Starting task codeRank...")
-                Configuration.setConfigProperty(extension.propertiesFileName.get())
                 val inputJarFileName = extension.inputJarFileName.get()
                 val graphBuilderLocation = extension.graphBuilderLocation.get()
                 val graphBuilderName = extension.graphBuilderName.get()
-                val args = arrayOf(inputJarFileName, graphBuilderLocation, graphBuilderName)
+                val classFilesLocation = extension.classFilesLocation.get()
+                val mode = extension.mode.get()
+                val args = arrayOf(inputJarFileName, graphBuilderLocation, graphBuilderName, classFilesLocation, mode)
+                Configuration.setConfigProperty(extension.propertiesFileName.get())
                 Main.main(args)
             }
         }.apply {

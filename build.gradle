@@ -57,11 +57,23 @@ gradlePlugin {
 
 apply plugin: 'org.coderank.CodeRanking' // applying plugin
 
+//     * args
+//     * args[0] - inputJarFileName
+//     * args[1] - graphBuilderLocation
+//     * args[2] - graphBuilderName
+//     * args[3] - classFilesLocation
+//     * args[4] - mode
+
+// "/home/olesya/HSE_2020-1/java/maze/out/artifacts/maze_jar/maze.jar" "/home/olesya/HSE_2020-1/newestCodeRank/src/main/java/CodeRank/app/src/main/impl/javaLoader.jar"
+// "CodeRank.app.src.main.impl.graph.Graph" "/home/olesya/HSE_2020-1/java/maze/out/production/maze/" "Dynamic"
+
 coderank {
 //    inputJarFileName = '/home/olesya/Downloads/junit-4.13.2.jar'
     inputJarFileName = '/home/olesya/HSE_2020-1/java/maze/out/artifacts/maze_jar/maze.jar'
-    propertiesFileName = '/home/olesya/HSE_2020-1/CodeRank/src/main/java/CodeRank/app/src/main/resources/analysis.properties'
-    graphBuilderLocation = '/home/olesya/HSE_2020-1/CodeRank/src/main/java/CodeRank/app/src/main/impl/javaLoader.jar'
+    propertiesFileName = '/home/olesya/HSE_2020-1/newestCodeRank/CodeRanking/src/main/java/CodeRank/app/src/main/resources/analysis.properties'
+    graphBuilderLocation = '/home/olesya/HSE_2020-1/newestCodeRank/src/main/java/CodeRank/app/src/main/impl/javaLoader.jar'
 //    graphBuilderLocation = './build/classes/java/main/'
     graphBuilderName = 'CodeRank.app.src.main.impl.graph.Graph'
+    classFilesLocation = '/home/olesya/HSE_2020-1/java/maze/out/production/maze/'
+    mode = 'Dynamic'
 }

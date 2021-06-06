@@ -19,17 +19,8 @@ public class StaticLauncher {
     public static Graph<MethodNode> graph = new Graph<>();
     public static GraphBuilderLoader<MethodNode> loader;
 
-    public static void launchStatic(String[] args) throws Exception {
+    public static void launchStatic(String[] args, Enumeration<JarEntry> entries, JarFile jarFile) throws Exception {
 
-        long time = System.currentTimeMillis();
-        String jarPath = args[0];
-        JarFile jarFile = new JarFile(jarPath);
-        Enumeration<JarEntry> entries = jarFile.entries();
-
-        // костыль to launch without plugin installation
-        Configuration.setConfigProperty("/home/olesya/HSE_2020-1/newestCodeRank/CodeRanking/src/main/java/CodeRank/app/src/main/resources/analysis.properties");
-
-        new Configuration();
         loader = new GraphBuilderLoader<>(args[1], args[2]);
         loader.createInstance();
         while (entries.hasMoreElements()) {
@@ -45,34 +36,7 @@ public class StaticLauncher {
             }
         }
 
-        /*
-
-        // GRAPH CONSTRUCTION OUTPUT
-
-        graph.constructGraph();
-
-        for (Node<MethodNode> m : graph.getGraphStorage()) {
-            System.out.println("\nNEW METHOD");
-            System.out.println(m.payload.getName());
-            if (!graph.getGraphEdges().get(m).isEmpty()) {
-                System.out.println("EDGES");
-
-                for (Node<MethodNode> me : graph.getGraphEdges().get(m)) {
-                    System.out.println(me.payload.getName());
-                }
-            }
-        }
-
-        */
-
         loader.loadGraphBuilder();
         loader.applyParameters();
-
-        // TIME MEASUREMENT
-        long usedBytes = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
-        System.out.print("FINAL TIME: ");
-        System.out.println(System.currentTimeMillis() - time);
-        System.out.print("FINAL SPACE: ");
-        System.out.println(usedBytes);
     }
 }
