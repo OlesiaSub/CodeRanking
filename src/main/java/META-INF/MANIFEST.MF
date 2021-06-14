@@ -1,3 +1,3 @@
 Manifest-Version: 1.0
-Main-Class: CodeRank.app.src.main.impl.main.Main
+Main-Class: rank.pain.impl.launcher.Launcher
 

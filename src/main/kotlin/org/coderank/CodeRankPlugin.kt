@@ -3,8 +3,8 @@ package org.coderank
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
-import CodeRank.app.src.main.impl.asm.Configuration
-import CodeRank.app.src.main.impl.main.Main
+import rank.pain.impl.asm.Configuration
+import rank.pain.impl.launcher.Launcher
 
 class CodeRankPlugin : Plugin<Project> {
     override fun apply(project: Project) {
@@ -19,7 +19,7 @@ class CodeRankPlugin : Plugin<Project> {
                 val mode = extension.mode.get()
                 val args = arrayOf(inputJarFileName, graphBuilderLocation, graphBuilderName, classFilesLocation, mode)
                 Configuration.setConfigProperty(extension.propertiesFileName.get())
-                Main.main(args)
+                Launcher.main(args)
             }
         }.apply {
             group = "stat"
