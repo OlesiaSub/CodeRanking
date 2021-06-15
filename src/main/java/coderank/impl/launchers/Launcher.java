@@ -14,6 +14,7 @@ public class Launcher {
      *             args[2] - graphBuilderName
      *             args[3] - classFilesLocation
      *             args[4] - mode
+     *             args[5] - propertiesFileName
      * @throws Exception
      */
     public static void main(String[] args) throws Exception {
@@ -23,7 +24,7 @@ public class Launcher {
         Enumeration<JarEntry> entries = jarFile.entries();
 
         // to launch without plugin installation
-        Configuration.setConfigProperty("/home/olesya/HSE_2020-1/newestCodeRank/CodeRanking/src/main/java/coderank/resources/analysis.properties");
+        // Configuration.setConfigProperty("/home/olesya/HSE_2020-1/newestCodeRank/CodeRanking/src/main/java/coderank/resources/analysis.properties");
         new Configuration();
 
         String mode = args[4];

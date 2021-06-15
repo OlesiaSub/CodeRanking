@@ -1,13 +1,13 @@
 //Uncomment to apply plugin
 
-buildscript {
-    repositories {
-        mavenLocal() // plugin published to maven local
-    }
-    dependencies {
-        classpath 'org.coderank:CodeRanking:0.0.1' // plugin’s artifact
-    }
-}
+//buildscript {
+//    repositories {
+//        mavenLocal() // plugin published to maven local
+//    }
+//    dependencies {
+//        classpath 'org.coderank:CodeRanking:0.0.1'
+//    }
+//}
 
 plugins {
     id 'java-gradle-plugin'
@@ -55,15 +55,13 @@ gradlePlugin {
 
 // Uncomment to apply plugin
 
-apply plugin: 'org.coderank.CodeRanking' // applying plugin
-
-//"/home/olesya/HSE_2020-1/currentgitstorageHELP/java-1-hse-2021/out/artifacts/java_1_hse_2021_jar/java-1-hse-2021.jar" "/home/olesya/HSE_2020-1/newestCodeRank/src/main/java/rank/pain/impl/javaLoader.jar" "rank.pain.impl.graph.Graph" "/home/olesya/HSE_2020-1/currentgitstorageHELP/java-1-hse-2021/build/classes/java/main" "static"
-// "/home/olesya/HSE_2020-1/java/newmaze/out/artifacts/newmaze_jar/newmaze.jar" "/home/olesya/HSE_2020-1/newestCodeRank/src/main/java/rank/pain/impl/javaLoader.jar" "rank.pain.impl.graph.Graph" "/home/olesya/HSE_2020-1/java/newmaze/build/classes/java/main" "analyse_dynamic"
-coderank {
-    inputJarFileName = '/home/olesya/HSE_2020-1/java/newmaze/out/artifacts/newmaze_jar/newmaze.jar'
-    propertiesFileName = '/home/olesya/HSE_2020-1/newestCodeRank/CodeRanking/src/main/java/rank/pain/resources/analysis.properties'
-    graphBuilderLocation = '/home/olesya/HSE_2020-1/newestCodeRank/src/main/java/rank/pain/impl/javaLoader.jar'
-    graphBuilderName = 'rank.pain.impl.graph.Graph'
-    classFilesLocation = '/home/olesya/HSE_2020-1/java/newmaze/build/classes/java/main'
-    mode = 'analyse_dynamic'
-}
+//apply plugin: 'org.coderank.CodeRanking'
+//
+//coderank {
+//    inputJarFileName = '/home/olesya/HSE_2020-1/java/newmaze/out/artifacts/newmaze_jar/newmaze.jar'
+//    graphBuilderLocation = '/home/olesya/HSE_2020-1/newestCodeRank/src/main/java/rank/pain/impl/javaLoader.jar'
+//    graphBuilderName = 'rank.pain.impl.graph.Graph'
+//    classFilesLocation = '/home/olesya/HSE_2020-1/java/newmaze/build/classes/java/main'
+//    mode = 'analyse_dynamic'
+//    propertiesFileName = '/home/olesya/HSE_2020-1/newestCodeRank/CodeRanking/src/main/java/rank/pain/resources/analysis.properties'
+//}
