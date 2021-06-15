@@ -3,8 +3,8 @@ package org.coderank
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
-import rank.pain.impl.asm.Configuration
-import rank.pain.impl.launcher.Launcher
+import coderank.impl.staticanalysis.Configuration
+import coderank.impl.launchers.Launcher
 
 class CodeRankPlugin : Plugin<Project> {
     override fun apply(project: Project) {
