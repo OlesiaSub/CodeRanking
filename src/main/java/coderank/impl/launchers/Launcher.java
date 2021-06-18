@@ -25,6 +25,7 @@ public class Launcher {
 
         // to launch without plugin installation
         // Configuration.setConfigProperty("/home/olesya/HSE_2020-1/newestCodeRank/CodeRanking/src/main/java/coderank/resources/analysis.properties");
+
         new Configuration();
 
         String mode = args[4];
@@ -45,8 +46,6 @@ public class Launcher {
         long usedBytes = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
         System.out.print("FINAL TIME: ");
         System.out.println(System.currentTimeMillis() - time);
-        System.out.print("FINAL SPACE: ");
-        System.out.println(usedBytes);
     }
 }
 
